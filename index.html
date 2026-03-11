@@ -766,7 +766,7 @@
                 </div>
                 ${p.categoria ? `<span class="categoria-tag">${p.categoria}</span>` : ''}
                 ${p.estoque <= 0 ? '<div class="faixa-sem-estoque">Sem estoque</div>' : ''}
-                <button class="btn-add" onclick="adicionar('${p.nome}', ${p.preco}, '${p.id}')" ${p.estoque <= 0 ? 'disabled' : ''}>
+                <button class="btn-add" onclick="adicionar('${p.nome}', ${p.preco}, '${p.id}', '${p.categoria||''}')" ${p.estoque <= 0 ? 'disabled' : ''}>
                     ${p.estoque <= 0 ? '✕' : '+'}
                 </button>
             </div>`).join('');
@@ -939,13 +939,15 @@
         document.querySelectorAll('.doce-animado').forEach(el => el.remove());
     };
 
-    window.adicionar = (nome, preco, id) => {
+    window.adicionar = (nome, preco, id, categoria) => {
         if (!window._carrinho) window._carrinho = {};
-        if (window._carrinho[nome]) window._carrinho[nome].qtd++;
-        else window._carrinho[nome] = { preco, qtd: 1, idFirebase: id };
+        const chave = categoria ? `[${categoria}] ${nome}` : nome;
+        if (window._carrinho[chave]) window._carrinho[chave].qtd++;
+        else window._carrinho[chave] = { preco, qtd: 1, idFirebase: id };
         window._carrinhoTotal = (window._carrinhoTotal || 0) + preco;
+        const chave = categoria ? `[${categoria}] ${nome}` : nome;
         renderizarCarrinho();
-        mostrarAviso(`${window._carrinho[nome].qtd}x ${nome} adicionado! 🍫`);
+        mostrarAviso(`${window._carrinho[chave].qtd}x ${nome} adicionado! 🍫`);
     };
 
     window.remover = (n) => {
