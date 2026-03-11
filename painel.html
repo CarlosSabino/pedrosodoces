@@ -614,36 +614,58 @@
     async function carregarDevedores() {
         const todos = window._todosPedidos;
         const quinzenas = todos.filter(p => (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') && p.status !== 'Cancelado' && p.status !== 'Pago');
+        const cont = document.getElementById('lista-devedores');
+        if (!quinzenas.length) {
+            cont.innerHTML = '<p style="color:var(--text-soft); text-align:center; padding:30px 0;">🎉 Nenhum devedor! Tudo em dia.</p>';
+            return;
+        }
         // Group by client
         const mapa = {};
         quinzenas.forEach(p => {
             const key = p.emailCliente || p.cliente;
-            if (!mapa[key]) mapa[key] = { nome: p.cliente, email: p.emailCliente, total: 0, pedidos: [] };
+            if (!mapa[key]) mapa[key] = { nome: p.cliente, email: p.emailCliente, total: 0, pedidos: [], whatsapp: null };
             mapa[key].total += p.total || 0;
             mapa[key].pedidos.push(p);
         });
+        // Fetch WhatsApp from usuarios collection
+        const uids = await getDocs(collection(db, "usuarios"));
+        uids.forEach(d => {
+            const u = d.data();
+            if (u.email && mapa[u.email]) mapa[u.email].whatsapp = u.whatsapp || null;
+        });
         const lista = Object.values(mapa).sort((a, b) => b.total - a.total);
-        const cont = document.getElementById('lista-devedores');
-        if (!lista.length) {
-            cont.innerHTML = '<p style="color:var(--text-soft); text-align:center; padding:30px 0;">🎉 Nenhum devedor! Tudo em dia.</p>';
-            return;
-        }
         cont.innerHTML = lista.map(dev => {
-            const pedidosHtml = dev.pedidos.map(p =>
-                `<div>• #${p.pedidoId} — R$ ${(p.total||0).toFixed(2)} <span class="tag-quinzena">quinzena</span></div>`
-            ).join('');
-            const msg = encodeURIComponent(`Olá ${dev.nome}! 🍫 Passando para lembrar que você tem R$ ${dev.total.toFixed(2)} em aberto com a Pedroso Doces. Pode confirmar o pagamento?`);
+            const pedidosHtml = dev.pedidos.map(p => {
+                const itH = p.itens ? Object.keys(p.itens).map(n => `${p.itens[n].qtd}x ${n}`).join(', ') : '...';
+                const statusLabel = p.entregue ? '📦 Entregue' : '⏳ Pendente';
+                return `<div style="padding:5px 0; border-bottom:1px solid var(--border); font-size:0.78em;">
+                    <span style="font-weight:700;">#${p.pedidoId}</span>
+                    <span style="color:var(--text-soft); margin-left:4px;">${new Date(p.data).toLocaleDateString('pt-BR')}</span>
+                    <span style="color:var(--ouro); font-weight:700; margin-left:4px;">${statusLabel}</span>
+                    <div style="color:var(--text-soft); margin-top:2px;">${itH}</div>
+                    <div style="color:var(--vermelho); font-weight:800; margin-top:2px;">R$ ${(p.total||0).toFixed(2)}</div>
+                </div>`;
+            }).join('');
+            const numDest = dev.whatsapp ? `55${dev.whatsapp}` : WHATSAPP_NUM;
+            const msg = encodeURIComponent(`Olá ${dev.nome}! 🍫
+
+Passando para lembrar que você tem *R$ ${dev.total.toFixed(2)}* em aberto com a Pedroso Doces.
+
+Pode confirmar o pagamento? 😊`);
             return `
             <div class="devedor-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
                     <div>
                         <div class="devedor-nome">${dev.nome}</div>
-                        <div style="font-size:0.75em; color:var(--text-soft);">${dev.email||''}</div>
+                        <div style="font-size:0.72em; color:var(--text-soft);">${dev.email||''}</div>
+                        ${dev.whatsapp ? `<div style="font-size:0.72em; color:var(--verde); font-weight:700;">📱 ${dev.whatsapp}</div>` : '<div style="font-size:0.68em; color:var(--text-soft); font-style:italic;">WhatsApp não cadastrado</div>'}
                     </div>
-                    <button class="ped-btn btn-msg" style="flex:none; padding:8px 12px;" onclick="window.open('https://wa.me/${WHATSAPP_NUM}?text=${msg}')">💬 Cobrar</button>
+                    <button class="ped-btn btn-msg" style="flex:none; padding:8px 12px;" onclick="window.open('https://wa.me/${numDest}?text=${msg}')">💬 Cobrar</button>
                 </div>
-                <div class="devedor-total">R$ ${dev.total.toFixed(2)} em aberto</div>
-                <div class="devedor-pedidos">${pedidosHtml}</div>
+                <div class="devedor-pedidos" style="margin-bottom:8px;">${pedidosHtml}</div>
+                <div class="devedor-total" style="text-align:right; padding-top:6px; border-top:1px solid var(--border);">
+                    Total em aberto: R$ ${dev.total.toFixed(2)}
+                </div>
             </div>`;
         }).join('');
     }
