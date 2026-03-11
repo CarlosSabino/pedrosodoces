@@ -105,7 +105,8 @@
     .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; }
     .form-group { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
     .form-group label { font-size:0.75em; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:0.5px; }
-    .form-group input, .form-group select, .form-group textarea { width:100%; box-sizing:border-box;
+    .form-group input, .form-group select, .form-group textarea {
+        width:100%; box-sizing:border-box;
         padding:10px 13px; border-radius:10px; border:1.5px solid var(--border);
         background:var(--bg); font-family:'Lato',sans-serif; font-size:0.88em; color:var(--text);
         outline:none; transition:border-color 0.2s;
@@ -285,7 +286,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, where, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const WHATSAPP_NUM = "5511973019207";
     const firebaseConfig = {
@@ -304,6 +305,7 @@
 
     window._todosPedidos = [];
     window._filtroAtual = 'todos';
+    window._produtosLista = [];
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -404,7 +406,6 @@
         });
     };
 
-    window._produtosLista = [];
     async function carregarProdutosAdmin() {
         onSnapshot(collection(db, "produtos"), (snap) => {
             window._produtosLista = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -418,9 +419,12 @@
         const cont = document.getElementById('lista-produtos-admin');
         if (!lista.length) { cont.innerHTML = '<p style="color:var(--text-soft); font-size:0.85em;">Nenhum produto cadastrado.</p>'; return; }
         cont.innerHTML = lista.map(p => {
-            const estBadge = p.estoque <= 0 ? `<span class="estoque-badge estoque-zero">Sem estoque</span>` :
-                             p.estoque <= 5 ? `<span class="estoque-badge estoque-baixo">⚠ ${p.estoque} restantes</span>` :
-                             `<span class="estoque-badge estoque-ok">✓ ${p.estoque} em estoque</span>`;
+            const estBadge = p.estoque <= 0
+                ? `<span class="estoque-badge estoque-zero">Sem estoque</span>`
+                : p.estoque <= 5
+                ? `<span class="estoque-badge estoque-baixo">⚠ ${p.estoque} restantes</span>`
+                : `<span class="estoque-badge estoque-ok">✓ ${p.estoque} em estoque</span>`;
+            // Usar data-id para evitar problemas com aspas no onclick
             return `
             <div class="prod-card" style="opacity:${p.ativo===false?0.5:1};">
                 <img class="prod-foto" src="${p.fotoUrl||''}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23f5e4cc%22 width=%22200%22 height=%22200%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2236%22>🍫</text></svg>'">
@@ -433,12 +437,23 @@
                     <div style="margin-top:4px;">${estBadge}</div>
                 </div>
                 <div class="prod-acoes">
-                    <button class="prod-btn" onclick="editarProduto('${p.id}')" title="Editar">✏️</button>
-                    <button class="prod-btn" onclick="toggleAtivo('${p.id}', ${p.ativo !== false})" title="Ativar/Desativar">${p.ativo===false?'👁':'🚫'}</button>
-                    <button class="prod-btn danger" onclick="excluirProduto('${p.id}')" title="Excluir">🗑</button>
+                    <button class="prod-btn" data-id="${p.id}" data-acao="editar" title="Editar">✏️</button>
+                    <button class="prod-btn" data-id="${p.id}" data-acao="toggle" data-ativo="${p.ativo !== false}" title="Ativar/Desativar">${p.ativo===false?'👁':'🚫'}</button>
+                    <button class="prod-btn danger" data-id="${p.id}" data-acao="excluir" title="Excluir">🗑</button>
                 </div>
             </div>`;
         }).join('');
+
+        // Event delegation — evita problema de aspas no onclick
+        cont.onclick = (e) => {
+            const btn = e.target.closest('[data-acao]');
+            if (!btn) return;
+            const id = btn.dataset.id;
+            const acao = btn.dataset.acao;
+            if (acao === 'editar') editarProduto(id);
+            else if (acao === 'toggle') toggleAtivo(id, btn.dataset.ativo === 'true');
+            else if (acao === 'excluir') excluirProduto(id);
+        };
     }
 
     window.salvarProduto = async () => {
@@ -450,12 +465,18 @@
         const categoria = document.getElementById('prod-categoria').value;
         if (!nome || isNaN(preco)) return alert("Preencha nome e preço!");
         const dados = { nome, preco, estoque, fotoUrl, categoria, ativo: true };
-        if (id) { await updateDoc(doc(db, "produtos", id), dados); toast('Produto atualizado! ✓'); cancelarEdicao(); }
-        else { await addDoc(collection(db, "produtos"), dados); toast('Produto adicionado! ✓'); }
-        limparFormProd();
+        if (id) {
+            await updateDoc(doc(db, "produtos", id), dados);
+            toast('Produto atualizado! ✓');
+            cancelarEdicao();
+        } else {
+            await addDoc(collection(db, "produtos"), dados);
+            toast('Produto adicionado! ✓');
+            limparFormProd();
+        }
     };
 
-    window.editarProduto = (id) => {
+    function editarProduto(id) {
         const p = window._produtosLista.find(x => x.id === id);
         if (!p) return;
         document.getElementById('prod-edit-id').value = id;
@@ -467,7 +488,7 @@
         document.getElementById('form-prod-titulo').textContent = '✏️ Editar Produto';
         document.getElementById('btn-cancelar-edicao').style.display = 'block';
         document.getElementById('form-prod-titulo').scrollIntoView({ behavior: 'smooth' });
-    };
+    }
 
     window.cancelarEdicao = () => {
         limparFormProd();
@@ -475,17 +496,17 @@
         document.getElementById('form-prod-titulo').textContent = '➕ Novo Produto';
     };
 
-    window.toggleAtivo = (id, estaAtivo) => {
+    function toggleAtivo(id, estaAtivo) {
         updateDoc(doc(db, "produtos", id), { ativo: !estaAtivo });
         toast(estaAtivo ? 'Produto desativado' : 'Produto ativado');
-    };
+    }
 
-    window.excluirProduto = (id) => {
+    function excluirProduto(id) {
         confirmar('Excluir produto?', 'Esta ação não pode ser desfeita.', async () => {
             await deleteDoc(doc(db, "produtos", id));
             toast('Produto excluído');
         });
-    };
+    }
 
     function limparFormProd() {
         ['prod-edit-id','prod-nome','prod-preco','prod-estoque','prod-foto'].forEach(id => document.getElementById(id).value = '');
