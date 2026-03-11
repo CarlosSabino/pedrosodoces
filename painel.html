@@ -85,6 +85,7 @@
 
     /* PRODUTOS */
     .prod-card { background:var(--surface); border-radius:16px; padding:13px; margin-bottom:11px; box-shadow:0 3px 12px var(--sombra); border:1px solid var(--border); display:flex; gap:12px; align-items:center; }
+    .prod-card.vertical { flex-direction:column; align-items:flex-start; gap:6px; }
     .prod-foto { width:60px; height:60px; border-radius:12px; object-fit:cover; background:var(--creme-dark); flex-shrink:0; }
     .prod-info { flex:1; min-width:0; }
     .prod-nome { font-weight:800; font-size:0.92em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -376,7 +377,7 @@
         badge.textContent = pend;
         badge.classList.toggle('show', pend > 0);
         // Devedores (quinzena nao entregue)
-        const quinzenas = todos.filter(p => p.pagamento === 'Quinzena' && !p.entregue && p.status !== 'Cancelado');
+        const quinzenas = todos.filter(p => (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') && p.status !== 'Cancelado' && p.status !== 'Pago');
         const totalQuinzena = quinzenas.reduce((s, p) => s + (p.total || 0), 0);
         const clientesDevedores = [...new Set(quinzenas.map(p => p.emailCliente))].length;
         document.getElementById('d-devedores').textContent = `R$ ${totalQuinzena.toFixed(2)}`;
@@ -561,24 +562,38 @@
         snap.forEach(d => {
             const p = d.data();
             if (!p.emailCliente) return;
-            if (!mapa[p.emailCliente]) mapa[p.emailCliente] = { nome: p.cliente, total: 0, qtd: 0 };
+            if (!mapa[p.emailCliente]) mapa[p.emailCliente] = { nome: p.cliente, total: 0, qtd: 0, pedidos: [] };
             mapa[p.emailCliente].total += p.total || 0;
             mapa[p.emailCliente].qtd++;
+            mapa[p.emailCliente].pedidos.push(p);
         });
         const ranking = Object.entries(mapa).sort((a,b) => b[1].total - a[1].total);
         const cont = document.getElementById('lista-clientes');
         if (!ranking.length) { cont.innerHTML = '<p style="color:var(--text-soft);">Nenhum cliente ainda.</p>'; return; }
-        cont.innerHTML = ranking.map(([email, info], i) => `
-            <div class="prod-card">
-                <div style="font-size:1.4em; flex-shrink:0;">${['🥇','🥈','🥉'][i] || '👤'}</div>
-                <div class="prod-info">
-                    <div class="prod-nome">${info.nome}</div>
-                    <div class="prod-det"><span style="font-size:0.85em;">${email}</span></div>
-                    <div style="margin-top:4px; font-size:0.78em; color:var(--ouro); font-weight:700;">
-                        ${info.qtd} pedido${info.qtd>1?'s':''} · R$ ${info.total.toFixed(2)} total
+        cont.innerHTML = ranking.map(([email, info], i) => {
+            const pedidosHtml = info.pedidos.map(p => {
+                const itH = p.itens ? Object.keys(p.itens).map(n => `${p.itens[n].qtd}x ${n}`).join(', ') : '...';
+                const cor = p.entregue ? '#a2d2ff' : (p.status === 'Cancelado' ? '#c0392b' : p.pagamento === 'Quinzena' ? '#e67e22' : '#25d366');
+                return `<div style="font-size:0.75em; margin-top:5px; padding:5px 8px; background:var(--bg); border-radius:8px; border-left:3px solid ${cor};">
+                    <span style="font-weight:700;">#${p.pedidoId}</span> · ${itH} · <strong>R$ ${(p.total||0).toFixed(2)}</strong>
+                    <span style="color:${cor}; font-size:0.85em; font-weight:800; margin-left:4px;">${p.entregue ? 'Entregue' : p.status}</span>
+                </div>`;
+            }).join('');
+            return `
+            <div class="prod-card vertical">
+                <div style="display:flex; gap:10px; align-items:center; width:100%;">
+                    <div style="font-size:1.4em; flex-shrink:0;">${['🥇','🥈','🥉'][i] || '👤'}</div>
+                    <div class="prod-info">
+                        <div class="prod-nome">${info.nome}</div>
+                        <div class="prod-det"><span style="font-size:0.85em;">${email}</span></div>
+                        <div style="margin-top:4px; font-size:0.78em; color:var(--ouro); font-weight:700;">
+                            ${info.qtd} pedido${info.qtd>1?'s':''} · R$ ${info.total.toFixed(2)} total
+                        </div>
                     </div>
                 </div>
-            </div>`).join('');
+                ${pedidosHtml}
+            </div>`;
+        }).join('');
     }
 
     function confirmar(titulo, msg, cb) {
@@ -598,7 +613,7 @@
 
     async function carregarDevedores() {
         const todos = window._todosPedidos;
-        const quinzenas = todos.filter(p => p.pagamento === 'Quinzena' && !p.entregue && p.status !== 'Cancelado');
+        const quinzenas = todos.filter(p => (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') && p.status !== 'Cancelado' && p.status !== 'Pago');
         // Group by client
         const mapa = {};
         quinzenas.forEach(p => {
