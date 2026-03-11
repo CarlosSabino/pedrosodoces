@@ -365,7 +365,9 @@
         const filtro = window._filtroAtual;
         let lista = window._todosPedidos;
         if (filtro === 'entregue') lista = lista.filter(p => p.entregue);
-        else if (filtro !== 'todos') lista = lista.filter(p => p.status === filtro && !p.entregue);
+        else if (filtro === 'Pago') lista = lista.filter(p => p.status === 'Pago');
+        else if (filtro === 'Cancelado') lista = lista.filter(p => p.status === 'Cancelado');
+        else if (filtro === 'Pendente') lista = lista.filter(p => p.status !== 'Pago' && p.status !== 'Cancelado');
 
         const cont = document.getElementById('lista-pedidos');
         if (!lista.length) { cont.innerHTML = '<p style="color:var(--text-soft); font-size:0.85em;">Nenhum pedido aqui.</p>'; return; }
