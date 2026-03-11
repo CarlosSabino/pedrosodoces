@@ -135,6 +135,15 @@
     /* TOAST */
     #painel-toast { display:none; position:fixed; top:18px; left:50%; transform:translateX(-50%); background:var(--choc); color:var(--ouro-light); border:1px solid var(--ouro); padding:11px 24px; border-radius:50px; font-size:0.88em; font-weight:700; z-index:9999; box-shadow:0 6px 24px rgba(0,0,0,0.4); white-space:nowrap; animation:slideInT 0.3s ease; }
     @keyframes slideInT { from{top:-50px;opacity:0} to{top:18px;opacity:1} }
+
+    /* QUINZENA / DEVEDORES */
+    .devedor-card { background:var(--surface); border-radius:16px; padding:14px; margin-bottom:11px; box-shadow:0 3px 12px var(--sombra); border:1px solid var(--border); border-left:5px solid var(--laranja); }
+    .devedor-nome { font-weight:800; font-size:0.95em; }
+    .devedor-total { font-size:1.1em; font-weight:800; color:var(--vermelho); margin-top:4px; }
+    .devedor-pedidos { font-size:0.78em; color:var(--text-soft); margin-top:6px; line-height:1.6; }
+    .tag-quinzena { display:inline-block; background:rgba(230,126,34,0.15); color:var(--laranja); font-size:0.65em; font-weight:800; padding:2px 8px; border-radius:10px; text-transform:uppercase; letter-spacing:0.5px; }
+    .dash-card.alerta { border:2px solid var(--laranja); }
+    .dash-card.alerta .dash-val { color:var(--laranja); }
 </style>
 </head>
 <body>
@@ -168,6 +177,10 @@
         <button class="nav-tab" onclick="irPara('clientes')" id="tab-clientes">
             <span class="ti">👥</span>Clientes
         </button>
+        <button class="nav-tab" onclick="irPara('devedores')" id="tab-devedores">
+            <span class="ti">💸</span>Devedores
+            <span class="tab-badge" id="badge-devedores">0</span>
+        </button>
     </div>
 
     <div class="main">
@@ -199,6 +212,11 @@
                     <span class="dash-icon">🍫</span>
                     <span class="dash-val" id="d-produtos">0</span>
                     <span class="dash-lab">Produtos Ativos</span>
+                </div>
+                <div class="dash-card alerta" style="grid-column:span 2; cursor:pointer;" onclick="irPara('devedores')">
+                    <span class="dash-icon">💸</span>
+                    <span class="dash-val" id="d-devedores">R$ 0,00</span>
+                    <span class="dash-lab">Total em Aberto (Quinzena) — toque para ver</span>
                 </div>
             </div>
         </div>
@@ -266,6 +284,13 @@
             <p class="sec-title">Clientes</p>
             <p class="sec-subtitle">Ranking por valor total de pedidos</p>
             <div id="lista-clientes"></div>
+        </div>
+
+        <!-- DEVEDORES -->
+        <div class="section" id="sec-devedores">
+            <p class="sec-title">💸 Extrato de Devedores</p>
+            <p class="sec-subtitle">Clientes com pagamento pendente na quinzena</p>
+            <div id="lista-devedores"></div>
         </div>
 
     </div>
@@ -350,6 +375,14 @@
         const badge = document.getElementById('badge-pedidos');
         badge.textContent = pend;
         badge.classList.toggle('show', pend > 0);
+        // Devedores (quinzena nao entregue)
+        const quinzenas = todos.filter(p => p.pagamento === 'Quinzena' && !p.entregue && p.status !== 'Cancelado');
+        const totalQuinzena = quinzenas.reduce((s, p) => s + (p.total || 0), 0);
+        const clientesDevedores = [...new Set(quinzenas.map(p => p.emailCliente))].length;
+        document.getElementById('d-devedores').textContent = `R$ ${totalQuinzena.toFixed(2)}`;
+        const badgeDev = document.getElementById('badge-devedores');
+        badgeDev.textContent = clientesDevedores;
+        badgeDev.classList.toggle('show', clientesDevedores > 0);
     }
 
     function renderizarPedidos() {
@@ -519,6 +552,7 @@
         document.getElementById(`sec-${sec}`).classList.add('active');
         document.getElementById(`tab-${sec}`).classList.add('active');
         if (sec === 'clientes') carregarClientes();
+        if (sec === 'devedores') carregarDevedores();
     };
 
     async function carregarClientes() {
@@ -560,6 +594,43 @@
         t.textContent = msg;
         t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 2500);
+    }
+
+    async function carregarDevedores() {
+        const todos = window._todosPedidos;
+        const quinzenas = todos.filter(p => p.pagamento === 'Quinzena' && !p.entregue && p.status !== 'Cancelado');
+        // Group by client
+        const mapa = {};
+        quinzenas.forEach(p => {
+            const key = p.emailCliente || p.cliente;
+            if (!mapa[key]) mapa[key] = { nome: p.cliente, email: p.emailCliente, total: 0, pedidos: [] };
+            mapa[key].total += p.total || 0;
+            mapa[key].pedidos.push(p);
+        });
+        const lista = Object.values(mapa).sort((a, b) => b.total - a.total);
+        const cont = document.getElementById('lista-devedores');
+        if (!lista.length) {
+            cont.innerHTML = '<p style="color:var(--text-soft); text-align:center; padding:30px 0;">🎉 Nenhum devedor! Tudo em dia.</p>';
+            return;
+        }
+        cont.innerHTML = lista.map(dev => {
+            const pedidosHtml = dev.pedidos.map(p =>
+                `<div>• #${p.pedidoId} — R$ ${(p.total||0).toFixed(2)} <span class="tag-quinzena">quinzena</span></div>`
+            ).join('');
+            const msg = encodeURIComponent(`Olá ${dev.nome}! 🍫 Passando para lembrar que você tem R$ ${dev.total.toFixed(2)} em aberto com a Pedroso Doces. Pode confirmar o pagamento?`);
+            return `
+            <div class="devedor-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <div class="devedor-nome">${dev.nome}</div>
+                        <div style="font-size:0.75em; color:var(--text-soft);">${dev.email||''}</div>
+                    </div>
+                    <button class="ped-btn btn-msg" style="flex:none; padding:8px 12px;" onclick="window.open('https://wa.me/${WHATSAPP_NUM}?text=${msg}')">💬 Cobrar</button>
+                </div>
+                <div class="devedor-total">R$ ${dev.total.toFixed(2)} em aberto</div>
+                <div class="devedor-pedidos">${pedidosHtml}</div>
+            </div>`;
+        }).join('');
     }
 
     window.alternarTema = () => {
