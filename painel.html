@@ -131,15 +131,6 @@
     .modal-box { background:var(--surface); border-radius:22px; padding:24px; width:90%; max-width:380px; box-shadow:0 20px 60px rgba(0,0,0,0.5); border:1px solid var(--border); }
     .modal-box h3 { font-family:'Playfair Display',serif; color:var(--ouro); margin:0 0 14px; }
 
-    /* LOGIN */
-    .login-wrap { display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; }
-    .login-card { background:var(--surface); border-radius:28px; padding:32px 26px; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(0,0,0,0.25); border:1px solid var(--border); text-align:center; }
-    .login-card img { width:120px; margin-bottom:12px; }
-    .login-card p { color:var(--text-soft); font-size:0.85em; margin-bottom:20px; }
-    .login-input { width:100%; padding:12px 14px; border-radius:11px; border:1.5px solid var(--border); background:var(--bg); font-family:'Lato',sans-serif; font-size:0.92em; color:var(--text); outline:none; margin-bottom:10px; box-sizing:border-box; }
-    .login-input:focus { border-color:var(--ouro); }
-    .login-btn { width:100%; padding:13px; border:none; border-radius:11px; background:linear-gradient(135deg, var(--ouro) 0%, var(--choc-mid) 100%); color:white; font-family:'Lato',sans-serif; font-weight:700; font-size:0.95em; cursor:pointer; letter-spacing:0.4px; }
-
     /* TOAST */
     #painel-toast { display:none; position:fixed; top:18px; left:50%; transform:translateX(-50%); background:var(--choc); color:var(--ouro-light); border:1px solid var(--ouro); padding:11px 24px; border-radius:50px; font-size:0.88em; font-weight:700; z-index:9999; box-shadow:0 6px 24px rgba(0,0,0,0.4); white-space:nowrap; animation:slideInT 0.3s ease; }
     @keyframes slideInT { from{top:-50px;opacity:0} to{top:18px;opacity:1} }
@@ -148,17 +139,6 @@
 <body>
 
 <div id="painel-toast"></div>
-
-<!-- LOGIN ADMIN -->
-<div id="tela-login" class="login-wrap">
-    <div class="login-card">
-        <img src="logo.jpg" alt="Pedroso Doces">
-        <p>Painel de Gestão</p>
-        <input class="login-input" type="email" id="adminEmail" placeholder="E-mail admin">
-        <input class="login-input" type="password" id="adminSenha" placeholder="Senha">
-        <button class="login-btn" onclick="fazerLogin()">🍫 Entrar no Painel</button>
-    </div>
-</div>
 
 <!-- PAINEL PRINCIPAL -->
 <div id="tela-painel" style="display:none;">
@@ -304,7 +284,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, where, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const WHATSAPP_NUM = "5511973019207";
@@ -333,21 +313,13 @@
                     signOut(auth); window.location.href = "index.html"; return;
                 }
             } catch(e) { signOut(auth); window.location.href = "index.html"; return; }
-            document.getElementById('tela-login').style.display = 'none';
             document.getElementById('tela-painel').style.display = 'block';
             iniciarPainel();
         } else {
-            document.getElementById('tela-login').style.display = 'flex';
-            document.getElementById('tela-painel').style.display = 'none';
+            window.location.href = "index.html";
         }
     });
 
-    window.fazerLogin = () => {
-        const e = document.getElementById('adminEmail').value;
-        const s = document.getElementById('adminSenha').value;
-        if (!e || !s) return alert("Preencha e-mail e senha!");
-        signInWithEmailAndPassword(auth, e, s).catch(() => alert("E-mail ou senha incorretos."));
-    };
     window.fazerLogout = () => signOut(auth);
 
     function iniciarPainel() {
