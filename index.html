@@ -155,6 +155,15 @@
         text-align: center;
         margin-bottom: 28px;
     }
+    .logo-area img {
+        display: block;
+        margin: 0 auto 8px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+    }
     .logo-svg-wrap {
         display: inline-flex;
         align-items: center;
@@ -292,12 +301,10 @@
     .categorias-scroll {
         display: flex;
         gap: 8px;
-        overflow-x: auto;
+        flex-wrap: wrap;
         padding-bottom: 6px;
         margin-bottom: 14px;
-        scrollbar-width: none;
     }
-    .categorias-scroll::-webkit-scrollbar { display: none; }
     .cat-btn {
         flex-shrink: 0;
         padding: 6px 14px;
@@ -694,15 +701,14 @@
     import { getFirestore, collection, getDocs, query, where, doc, onSnapshot, runTransaction, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // ⚠️ CONFIGURE AQUI ⚠️
-    const WHATSAPP_NUM = "5511973019207"; // Substitua pelo número do WhatsApp
+    const WHATSAPP_NUM = "5511999999999"; // Substitua pelo número do WhatsApp
     const firebaseConfig = {
-            apiKey: "AIzaSyAZtYo4CuXLzTOGsg2jRtDvbuK_t8ie33c",
-            authDomain: "pedrosodoces.firebaseapp.com",
-            databaseURL: "https://pedrosodoces-default-rtdb.firebaseio.com",
-            projectId: "pedrosodoces",
-            storageBucket: "pedrosodoces.firebasestorage.app",
-            messagingSenderId: "763771198237",
-            appId: "1:763771198237:web:cb3d0ec5931432fba49ff4"
+        apiKey: "COLE_AQUI",
+        authDomain: "COLE_AQUI.firebaseapp.com",
+        projectId: "COLE_AQUI",
+        storageBucket: "COLE_AQUI.firebasestorage.app",
+        messagingSenderId: "COLE_AQUI",
+        appId: "COLE_AQUI"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -995,7 +1001,7 @@
         document.getElementById('modal-pix').style.display = 'none';
         celebrarPedido();
         if (window._msgZapTemp) {
-            const num = "5511973019207"; // mesmo WHATSAPP_NUM
+            const num = "5511999999999"; // mesmo WHATSAPP_NUM
             window.location.href = `https://wa.me/${num}?text=${encodeURIComponent(window._msgZapTemp)}`;
             window._msgZapTemp = null;
         }
