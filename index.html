@@ -619,6 +619,7 @@
             <input type="text" id="regNome" placeholder="Seu nome / apelido">
             <input type="email" id="regEmail" placeholder="E-mail">
             <input type="password" id="regSenha" placeholder="Senha (mín. 6 dígitos)">
+            <input type="tel" id="regWhatsApp" placeholder="WhatsApp (ex: 11987654321)">
             <button class="btn btn-principal" onclick="btnCadastrar()">Criar Conta 🍬</button>
         </div>
     </div>
@@ -788,15 +789,16 @@
                 const ped = d.data();
                 const cor = ped.entregue ? "#a2d2ff" : (cores[ped.status] || cores.default);
                 const itH = ped.itens ? Object.keys(ped.itens).map(n => `• ${ped.itens[n].qtd}x ${n}`).join('<br>') : '...';
+                const quinzenaPendente = ped.pagamento === 'Quinzena' && ped.status !== 'Pago' && ped.status !== 'Cancelado';
                 cont.innerHTML += `
                     <div class="pedido-mini-card" style="border-left: 5px solid ${cor};">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                            <strong>#${ped.pedidoId}</strong>
-                            ${ped.pagamento === 'Quinzena' && !ped.entregue ? '<span style=\'font-size:0.65em; background:rgba(230,126,34,0.15); color:#e67e22; padding:2px 7px; border-radius:8px; font-weight:800; margin-left:5px;\'>💸 PAGTO PENDENTE</span>' : ''}
-                            <span style="color:${cor}; font-size:0.65em; font-weight:800; text-transform:uppercase; background:rgba(59,31,10,0.06); padding:3px 8px; border-radius:8px;">${ped.status}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; gap:6px;">
+                            <strong style="font-size:0.82em;">#${ped.pedidoId}</strong>
+                            <span style="color:${cor}; font-size:0.62em; font-weight:800; text-transform:uppercase; background:rgba(59,31,10,0.06); padding:3px 8px; border-radius:8px; white-space:nowrap;">${ped.entregue ? 'Entregue' : ped.status}</span>
                         </div>
+                        ${quinzenaPendente ? `<div style="font-size:0.68em; background:rgba(230,126,34,0.12); color:#e67e22; padding:3px 9px; border-radius:8px; font-weight:800; display:inline-block; margin-bottom:6px;">💸 PAGAMENTO PENDENTE (QUINZENA)</div>` : ''}
                         <div class="itens-ped">${itH}</div>
-                        <div class="total-ped">Total: R$ ${ped.total.toFixed(2)}</div>
+                        <div class="total-ped">Total: R$ ${ped.total.toFixed(2).replace('.',',')}</div>
                     </div>`;
             });
         });
@@ -870,11 +872,14 @@
         const n = document.getElementById('regNome').value;
         const e = document.getElementById('regEmail').value;
         const s = document.getElementById('regSenha').value;
+        const w = document.getElementById('regWhatsApp').value.replace(/\D/g,'');
         if (!n || !e) return alert("Preencha nome e e-mail!");
         if (s.length < 6) return alert("A senha precisa ter no mínimo 6 caracteres!");
         try {
             const res = await createUserWithEmailAndPassword(auth, e, s);
             await updateProfile(res.user, { displayName: n });
+            const { doc: docRef, setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+            await setDoc(docRef(db, "usuarios", res.user.uid), { nome: n, email: e, whatsapp: w, role: "cliente" });
         } catch(err) {
             if (err.code === 'auth/email-already-in-use') alert("Este e-mail já está em uso!");
             else alert("Erro ao criar conta.");
