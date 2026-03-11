@@ -35,7 +35,6 @@
     * { box-sizing: border-box; }
     body { margin:0; font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; transition: background 0.3s, color 0.3s; }
 
-    /* HEADER */
     .header { background:var(--header-bg); padding:13px 16px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 4px 20px rgba(0,0,0,0.35); }
     .header-left { display:flex; align-items:center; gap:10px; }
     .header-brand { margin:0; font-family:'Playfair Display',serif; font-size:1em; color:var(--ouro-light); font-weight:700; }
@@ -43,7 +42,6 @@
     .icon-btn { background:rgba(255,255,255,0.12); border:none; border-radius:50%; width:36px; height:36px; color:white; font-size:1em; cursor:pointer; display:flex; align-items:center; justify-content:center; }
     .icon-btn:active { background:rgba(255,255,255,0.3); }
 
-    /* NAV */
     .nav-tabs { display:flex; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; position:sticky; top:64px; z-index:99; transition: background 0.3s; }
     .nav-tabs::-webkit-scrollbar { display:none; }
     .nav-tab { flex:1; min-width:60px; padding:11px 5px; border:none; background:none; color:var(--text-soft); font-family:'Lato',sans-serif; font-size:0.65em; font-weight:800; cursor:pointer; border-bottom:3px solid transparent; display:flex; flex-direction:column; align-items:center; gap:2px; transition:all 0.2s; white-space:nowrap; letter-spacing:0.3px; text-transform:uppercase; }
@@ -52,22 +50,21 @@
     .tab-badge { background:var(--vermelho); color:white; border-radius:10px; padding:1px 5px; font-size:0.85em; display:none; }
     .tab-badge.show { display:inline-block; }
 
-    /* MAIN */
     .main { padding:14px; max-width:680px; margin:0 auto; overflow-x:hidden; }
     .section { display:none; }
     .section.active { display:block; }
 
-    /* DASHBOARD */
     .dash-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:14px; }
     .dash-card { background:var(--surface); border-radius:18px; padding:15px; box-shadow:0 4px 15px var(--sombra); border:1px solid var(--border); display:flex; flex-direction:column; gap:3px; transition: background 0.3s; }
     .dash-card.full { grid-column:span 2; background:var(--header-bg); }
+    .dash-card.alerta { grid-column:span 2; border:2px solid var(--laranja); cursor:pointer; }
+    .dash-card.alerta .dash-val { color:var(--laranja); }
     .dash-icon { font-size:1.6em; }
     .dash-val { font-size:1.4em; font-weight:800; color:var(--ouro); }
     .dash-lab { font-size:0.72em; color:var(--text-soft); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
     .dash-card.full .dash-val, .dash-card.full .dash-lab, .dash-card.full .dash-icon { color:var(--ouro-light); }
     .dash-card.full .dash-val { color:white; }
 
-    /* PEDIDOS */
     .pedido-card { background:var(--surface); border-radius:18px; margin-bottom:13px; box-shadow:0 4px 15px var(--sombra); border:1px solid var(--border); overflow:hidden; animation:slideUp 0.25s ease; }
     @keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
     .ped-header { padding:11px 14px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
@@ -76,14 +73,13 @@
     .ped-body { padding:12px 14px; font-size:0.82em; color:var(--text-soft); }
     .ped-body strong { color:var(--text); }
     .ped-footer { padding:10px 14px; display:flex; gap:7px; flex-wrap:wrap; border-top:1px solid var(--border); }
-    .ped-btn { flex:1; min-width:90px; padding:9px 8px; border-radius:10px; border:none; font-family:'Lato',sans-serif; font-size:0.75em; font-weight:700; cursor:pointer; transition:opacity 0.2s; text-transform:uppercase; letter-spacing:0.4px; }
+    .ped-btn { flex:1; min-width:80px; padding:9px 8px; border-radius:10px; border:none; font-family:'Lato',sans-serif; font-size:0.75em; font-weight:700; cursor:pointer; transition:opacity 0.2s; text-transform:uppercase; letter-spacing:0.4px; }
     .ped-btn:active { opacity:0.7; }
     .btn-pago { background:var(--verde); color:white; }
     .btn-entregue { background:var(--azul); color:var(--choc); }
     .btn-cancelar { background:var(--vermelho); color:white; }
     .btn-msg { background:var(--ouro); color:white; }
 
-    /* PRODUTOS */
     .prod-card { background:var(--surface); border-radius:16px; padding:13px; margin-bottom:11px; box-shadow:0 3px 12px var(--sombra); border:1px solid var(--border); display:flex; gap:12px; align-items:center; }
     .prod-card.vertical { flex-direction:column; align-items:flex-start; gap:6px; }
     .prod-foto { width:60px; height:60px; border-radius:12px; object-fit:cover; background:var(--creme-dark); flex-shrink:0; }
@@ -100,7 +96,6 @@
     .estoque-baixo { background:rgba(230,126,34,0.12); color:var(--laranja); }
     .estoque-zero { background:rgba(192,57,43,0.12); color:var(--vermelho); }
 
-    /* FORM ADD PRODUTO */
     .form-card { background:var(--surface); border-radius:18px; padding:18px; margin-bottom:14px; box-shadow:0 4px 15px var(--sombra); border:1px solid var(--border); overflow:hidden; width:100%; box-sizing:border-box; }
     .form-card h3 { font-family:'Playfair Display',serif; color:var(--ouro); margin:0 0 16px; font-size:1em; }
     .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; }
@@ -113,45 +108,36 @@
         outline:none; transition:border-color 0.2s;
     }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--ouro); }
-    .form-group textarea { resize:vertical; min-height:60px; }
     .btn-form { padding:12px; border:none; border-radius:10px; font-family:'Lato',sans-serif; font-weight:700; font-size:0.88em; cursor:pointer; width:100%; text-transform:uppercase; letter-spacing:0.5px; }
     .btn-form.add { background:linear-gradient(135deg, var(--ouro) 0%, var(--choc-mid) 100%); color:white; }
     .btn-form.cancel { background:var(--creme-dark); color:var(--text-soft); }
 
-    /* FILTROS */
     .filtros { display:flex; gap:7px; margin-bottom:13px; flex-wrap:wrap; }
     .filtro-btn { padding:6px 14px; border-radius:20px; border:1.5px solid var(--border); background:var(--surface); color:var(--text-soft); font-family:'Lato',sans-serif; font-size:0.75em; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:0.3px; }
     .filtro-btn.ativo { background:var(--choc); color:var(--ouro-light); border-color:var(--choc); }
 
-    /* SECAO TITULO */
     .sec-title { font-family:'Playfair Display',serif; font-size:1.05em; color:var(--text); margin:0 0 12px; font-weight:700; }
     .sec-subtitle { font-size:0.8em; color:var(--text-soft); margin-top:-8px; margin-bottom:12px; }
 
-    /* MODAL */
     .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9000; justify-content:center; align-items:center; backdrop-filter:blur(6px); }
     .modal-overlay.aberto { display:flex; }
     .modal-box { background:var(--surface); border-radius:22px; padding:24px; width:90%; max-width:380px; box-shadow:0 20px 60px rgba(0,0,0,0.5); border:1px solid var(--border); }
     .modal-box h3 { font-family:'Playfair Display',serif; color:var(--ouro); margin:0 0 14px; }
 
-    /* TOAST */
     #painel-toast { display:none; position:fixed; top:18px; left:50%; transform:translateX(-50%); background:var(--choc); color:var(--ouro-light); border:1px solid var(--ouro); padding:11px 24px; border-radius:50px; font-size:0.88em; font-weight:700; z-index:9999; box-shadow:0 6px 24px rgba(0,0,0,0.4); white-space:nowrap; animation:slideInT 0.3s ease; }
     @keyframes slideInT { from{top:-50px;opacity:0} to{top:18px;opacity:1} }
 
-    /* QUINZENA / DEVEDORES */
     .devedor-card { background:var(--surface); border-radius:16px; padding:14px; margin-bottom:11px; box-shadow:0 3px 12px var(--sombra); border:1px solid var(--border); border-left:5px solid var(--laranja); }
     .devedor-nome { font-weight:800; font-size:0.95em; }
-    .devedor-total { font-size:1.1em; font-weight:800; color:var(--vermelho); margin-top:4px; }
+    .devedor-total { font-size:1.1em; font-weight:800; color:var(--vermelho); }
     .devedor-pedidos { font-size:0.78em; color:var(--text-soft); margin-top:6px; line-height:1.6; }
-    .tag-quinzena { display:inline-block; background:rgba(230,126,34,0.15); color:var(--laranja); font-size:0.65em; font-weight:800; padding:2px 8px; border-radius:10px; text-transform:uppercase; letter-spacing:0.5px; }
-    .dash-card.alerta { border:2px solid var(--laranja); }
-    .dash-card.alerta .dash-val { color:var(--laranja); }
+    .tag-quinzena { display:inline-block; background:rgba(230,126,34,0.15); color:var(--laranja); font-size:0.65em; font-weight:800; padding:2px 8px; border-radius:10px; text-transform:uppercase; }
 </style>
 </head>
 <body>
 
 <div id="painel-toast"></div>
 
-<!-- PAINEL PRINCIPAL -->
 <div id="tela-painel" style="display:none;">
     <div class="header">
         <div class="header-left">
@@ -165,23 +151,11 @@
     </div>
 
     <div class="nav-tabs">
-        <button class="nav-tab active" onclick="irPara('dash')" id="tab-dash">
-            <span class="ti">📊</span>Dashboard
-        </button>
-        <button class="nav-tab" onclick="irPara('pedidos')" id="tab-pedidos">
-            <span class="ti">🛒</span>Pedidos
-            <span class="tab-badge" id="badge-pedidos">0</span>
-        </button>
-        <button class="nav-tab" onclick="irPara('produtos')" id="tab-produtos">
-            <span class="ti">🍫</span>Produtos
-        </button>
-        <button class="nav-tab" onclick="irPara('clientes')" id="tab-clientes">
-            <span class="ti">👥</span>Clientes
-        </button>
-        <button class="nav-tab" onclick="irPara('devedores')" id="tab-devedores">
-            <span class="ti">💸</span>Devedores
-            <span class="tab-badge" id="badge-devedores">0</span>
-        </button>
+        <button class="nav-tab active" onclick="irPara('dash')" id="tab-dash"><span class="ti">📊</span>Dashboard</button>
+        <button class="nav-tab" onclick="irPara('pedidos')" id="tab-pedidos"><span class="ti">🛒</span>Pedidos<span class="tab-badge" id="badge-pedidos">0</span></button>
+        <button class="nav-tab" onclick="irPara('produtos')" id="tab-produtos"><span class="ti">🍫</span>Produtos</button>
+        <button class="nav-tab" onclick="irPara('clientes')" id="tab-clientes"><span class="ti">👥</span>Clientes</button>
+        <button class="nav-tab" onclick="irPara('devedores')" id="tab-devedores"><span class="ti">💸</span>Devedores<span class="tab-badge" id="badge-devedores">0</span></button>
     </div>
 
     <div class="main">
@@ -214,10 +188,10 @@
                     <span class="dash-val" id="d-produtos">0</span>
                     <span class="dash-lab">Produtos Ativos</span>
                 </div>
-                <div class="dash-card alerta" style="grid-column:span 2; cursor:pointer;" onclick="irPara('devedores')">
+                <div class="dash-card alerta" onclick="irPara('devedores')">
                     <span class="dash-icon">💸</span>
                     <span class="dash-val" id="d-devedores">R$ 0,00</span>
-                    <span class="dash-lab">Total em Aberto (Quinzena) — toque para ver</span>
+                    <span class="dash-lab">Em Aberto (Quinzena) — toque para ver</span>
                 </div>
             </div>
         </div>
@@ -238,7 +212,6 @@
         <!-- PRODUTOS -->
         <div class="section" id="sec-produtos">
             <p class="sec-title">Produtos</p>
-
             <div class="form-card">
                 <h3 id="form-prod-titulo">➕ Novo Produto</h3>
                 <input type="hidden" id="prod-edit-id">
@@ -276,7 +249,6 @@
                     <button class="btn-form cancel" id="btn-cancelar-edicao" style="display:none;" onclick="cancelarEdicao()">Cancelar</button>
                 </div>
             </div>
-
             <div id="lista-produtos-admin"></div>
         </div>
 
@@ -297,7 +269,7 @@
     </div>
 </div>
 
-<!-- MODAL CONFIRMAR -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-confirmar">
     <div class="modal-box">
         <h3 id="modal-titulo">Confirmar ação</h3>
@@ -314,6 +286,7 @@
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    const LOJA = 'Rô ♥ Lê';
     const WHATSAPP_NUM = "5511973019207";
     const firebaseConfig = {
         apiKey: "AIzaSyAZtYo4CuXLzTOGsg2jRtDvbuK_t8ie33c",
@@ -369,21 +342,23 @@
         const fat = ativos.reduce((s, p) => s + (p.total || 0), 0);
         const pend = todos.filter(p => !p.entregue && p.status !== 'Cancelado').length;
         const entr = todos.filter(p => p.entregue).length;
-        document.getElementById('d-faturamento').textContent = `R$ ${fat.toFixed(2)}`;
+        document.getElementById('d-faturamento').textContent = 'R$ ' + fat.toFixed(2);
         document.getElementById('d-pedidos-total').textContent = todos.length;
         document.getElementById('d-pendentes').textContent = pend;
         document.getElementById('d-entregues').textContent = entr;
         const badge = document.getElementById('badge-pedidos');
         badge.textContent = pend;
         badge.classList.toggle('show', pend > 0);
-        // Devedores (quinzena nao entregue)
-        const quinzenas = todos.filter(p => (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') && p.status !== 'Cancelado' && p.status !== 'Pago');
-        const totalQuinzena = quinzenas.reduce((s, p) => s + (p.total || 0), 0);
-        const clientesDevedores = [...new Set(quinzenas.map(p => p.emailCliente))].length;
-        document.getElementById('d-devedores').textContent = `R$ ${totalQuinzena.toFixed(2)}`;
+        const quinzenas = todos.filter(p =>
+            (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') &&
+            p.status !== 'Cancelado' && p.status !== 'Pago'
+        );
+        const totalQ = quinzenas.reduce((s, p) => s + (p.total || 0), 0);
+        const clientesQ = new Set(quinzenas.map(p => p.emailCliente)).size;
+        document.getElementById('d-devedores').textContent = 'R$ ' + totalQ.toFixed(2);
         const badgeDev = document.getElementById('badge-devedores');
-        badgeDev.textContent = clientesDevedores;
-        badgeDev.classList.toggle('show', clientesDevedores > 0);
+        badgeDev.textContent = clientesQ;
+        badgeDev.classList.toggle('show', clientesQ > 0);
     }
 
     function renderizarPedidos() {
@@ -395,31 +370,44 @@
         const cont = document.getElementById('lista-pedidos');
         if (!lista.length) { cont.innerHTML = '<p style="color:var(--text-soft); font-size:0.85em;">Nenhum pedido aqui.</p>'; return; }
 
-        const coresSt = { "Cancelado":"#c0392b","Pago":"#25d366","Pendente Pagamento (Quinzena)":"#e67e22","Pendente":"#c4832a" };
+        const coresSt = { "Cancelado":"#c0392b","Pago":"#25d366","Pendente Pagamento (Quinzena)":"#e67e22","Entregue":"#a2d2ff","Pendente":"#c4832a" };
         cont.innerHTML = lista.map(ped => {
             const cor = ped.entregue ? "#a2d2ff" : (coresSt[ped.status] || "#c4832a");
-            const itH = ped.itens ? Object.keys(ped.itens).map(n => `${ped.itens[n].qtd}x ${n}`).join(', ') : '...';
-            const btnPago = !ped.entregue && ped.status !== 'Pago' && ped.status !== 'Cancelado' ? `<button class="ped-btn btn-pago" onclick="acao('${ped.id}','pago')">✅ Pago</button>` : '';
-            const btnEntregue = !ped.entregue && ped.status !== 'Cancelado' ? `<button class="ped-btn btn-entregue" onclick="acao('${ped.id}','entregue')">📦 Entregue</button>` : '';
-            const btnCancelar = ped.status !== 'Cancelado' ? `<button class="ped-btn btn-cancelar" onclick="acao('${ped.id}','cancelar')">❌</button>` : '';
-            const msg = encodeURIComponent(`Olá ${ped.cliente}! 🍫 Seu pedido *#${ped.pedidoId}* da Rô ♥ Lê está pronto!`);
-            const btnMsg = `<button class="ped-btn btn-msg" onclick="window.open('https://wa.me/${WHATSAPP_NUM}?text=${msg}')">💬</button>`;
-            return `
-            <div class="pedido-card" style="border-left:5px solid ${cor};">
-                <div class="ped-header">
-                    <div>
-                        <div class="ped-cliente">${ped.cliente || '?'}</div>
-                        <div style="font-size:0.7em; color:var(--text-soft);">#${ped.pedidoId} · ${new Date(ped.data).toLocaleDateString('pt-BR')}</div>
-                    </div>
-                    <span class="ped-status" style="background:${cor};">${ped.entregue ? 'Entregue' : ped.status}</span>
-                </div>
-                <div class="ped-body">
-                    <div style="margin-bottom:5px;">${itH}</div>
-                    <strong>R$ ${(ped.total||0).toFixed(2)}</strong> · ${ped.pagamento||''}
-                </div>
-                <div class="ped-footer">${btnPago}${btnEntregue}${btnMsg}${btnCancelar}</div>
-            </div>`;
+            const itH = ped.itens ? Object.keys(ped.itens).map(n => ped.itens[n].qtd + 'x ' + n).join(', ') : '...';
+            const isQuinzenaPendente = (ped.pagamento === 'Quinzena' || ped.status === 'Pendente Pagamento (Quinzena)') && ped.status !== 'Pago' && ped.status !== 'Cancelado';
+            const btnPago = ped.status !== 'Pago' && ped.status !== 'Cancelado'
+                ? '<button class="ped-btn btn-pago" data-id="' + ped.id + '" data-acao="pago">✅ Pago</button>' : '';
+            const btnEntregue = !ped.entregue && ped.status !== 'Cancelado'
+                ? '<button class="ped-btn btn-entregue" data-id="' + ped.id + '" data-acao="entregue">📦 Entregue</button>' : '';
+            const btnCancelar = ped.status !== 'Cancelado'
+                ? '<button class="ped-btn btn-cancelar" data-id="' + ped.id + '" data-acao="cancelar">❌ Cancelar</button>' : '';
+            const btnMsg = '<button class="ped-btn btn-msg" data-id="' + ped.id + '" data-acao="msg" data-cliente="' + (ped.cliente||'') + '" data-pedidoid="' + (ped.pedidoId||'') + '">💬 Avisar</button>';
+            const tagQ = isQuinzenaPendente ? '<span style="font-size:0.65em; background:rgba(230,126,34,0.15); color:#e67e22; padding:2px 7px; border-radius:8px; font-weight:800; margin-left:6px;">💸 PGTO PENDENTE</span>' : '';
+            return '<div class="pedido-card" style="border-left:5px solid ' + cor + ';">'
+                + '<div class="ped-header">'
+                +   '<div>'
+                +     '<div class="ped-cliente">' + (ped.cliente||'?') + tagQ + '</div>'
+                +     '<div style="font-size:0.7em; color:var(--text-soft);">#' + ped.pedidoId + ' · ' + new Date(ped.data).toLocaleDateString('pt-BR') + '</div>'
+                +   '</div>'
+                +   '<span class="ped-status" style="background:' + cor + ';">' + (ped.entregue ? 'Entregue' : ped.status) + '</span>'
+                + '</div>'
+                + '<div class="ped-body"><div style="margin-bottom:5px;">' + itH + '</div><strong>R$ ' + (ped.total||0).toFixed(2) + '</strong> · ' + (ped.pagamento||'') + '</div>'
+                + '<div class="ped-footer">' + btnPago + btnEntregue + btnMsg + btnCancelar + '</div>'
+                + '</div>';
         }).join('');
+
+        cont.onclick = (e) => {
+            const btn = e.target.closest('[data-acao]');
+            if (!btn) return;
+            const id = btn.dataset.id;
+            const acao = btn.dataset.acao;
+            if (acao === 'msg') {
+                const msg = encodeURIComponent('Olá ' + btn.dataset.cliente + '! 🍫 Seu pedido *#' + btn.dataset.pedidoid + '* da ' + LOJA + ' está pronto!');
+                window.open('https://wa.me/' + WHATSAPP_NUM + '?text=' + msg);
+            } else {
+                window.acao(id, acao);
+            }
+        };
     }
 
     window.filtrarPedidos = (f, btn) => {
@@ -454,31 +442,25 @@
         if (!lista.length) { cont.innerHTML = '<p style="color:var(--text-soft); font-size:0.85em;">Nenhum produto cadastrado.</p>'; return; }
         cont.innerHTML = lista.map(p => {
             const estBadge = p.estoque <= 0
-                ? `<span class="estoque-badge estoque-zero">Sem estoque</span>`
+                ? '<span class="estoque-badge estoque-zero">Sem estoque</span>'
                 : p.estoque <= 5
-                ? `<span class="estoque-badge estoque-baixo">⚠ ${p.estoque} restantes</span>`
-                : `<span class="estoque-badge estoque-ok">✓ ${p.estoque} em estoque</span>`;
-            // Usar data-id para evitar problemas com aspas no onclick
-            return `
-            <div class="prod-card" style="opacity:${p.ativo===false?0.5:1};">
-                <img class="prod-foto" src="${p.fotoUrl||''}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23f5e4cc%22 width=%22200%22 height=%22200%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2236%22>🍫</text></svg>'">
-                <div class="prod-info">
-                    <div class="prod-nome">${p.nome}</div>
-                    <div class="prod-det">
-                        <span style="color:var(--ouro);">R$ ${(p.preco||0).toFixed(2)}</span>
-                        <span style="color:var(--text-soft);">${p.categoria||''}</span>
-                    </div>
-                    <div style="margin-top:4px;">${estBadge}</div>
-                </div>
-                <div class="prod-acoes">
-                    <button class="prod-btn" data-id="${p.id}" data-acao="editar" title="Editar">✏️</button>
-                    <button class="prod-btn" data-id="${p.id}" data-acao="toggle" data-ativo="${p.ativo !== false}" title="Ativar/Desativar">${p.ativo===false?'👁':'🚫'}</button>
-                    <button class="prod-btn danger" data-id="${p.id}" data-acao="excluir" title="Excluir">🗑</button>
-                </div>
-            </div>`;
+                ? '<span class="estoque-badge estoque-baixo">⚠ ' + p.estoque + ' restantes</span>'
+                : '<span class="estoque-badge estoque-ok">✓ ' + p.estoque + ' em estoque</span>';
+            return '<div class="prod-card" style="opacity:' + (p.ativo===false?0.5:1) + ';">'
+                + '<img class="prod-foto" src="' + (p.fotoUrl||'') + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23f5e4cc%22 width=%22200%22 height=%22200%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2236%22>🍫</text></svg>\'">'
+                + '<div class="prod-info">'
+                +   '<div class="prod-nome">' + p.nome + '</div>'
+                +   '<div class="prod-det"><span style="color:var(--ouro);">R$ ' + (p.preco||0).toFixed(2) + '</span><span style="color:var(--text-soft);">' + (p.categoria||'') + '</span></div>'
+                +   '<div style="margin-top:4px;">' + estBadge + '</div>'
+                + '</div>'
+                + '<div class="prod-acoes">'
+                +   '<button class="prod-btn" data-id="' + p.id + '" data-acao="editar" title="Editar">✏️</button>'
+                +   '<button class="prod-btn" data-id="' + p.id + '" data-acao="toggle" data-ativo="' + (p.ativo !== false) + '" title="Ativar/Desativar">' + (p.ativo===false?'👁':'🚫') + '</button>'
+                +   '<button class="prod-btn danger" data-id="' + p.id + '" data-acao="excluir" title="Excluir">🗑</button>'
+                + '</div>'
+                + '</div>';
         }).join('');
 
-        // Event delegation — evita problema de aspas no onclick
         cont.onclick = (e) => {
             const btn = e.target.closest('[data-acao]');
             if (!btn) return;
@@ -550,8 +532,8 @@
     window.irPara = (sec) => {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(`sec-${sec}`).classList.add('active');
-        document.getElementById(`tab-${sec}`).classList.add('active');
+        document.getElementById('sec-' + sec).classList.add('active');
+        document.getElementById('tab-' + sec).classList.add('active');
         if (sec === 'clientes') carregarClientes();
         if (sec === 'devedores') carregarDevedores();
     };
@@ -567,7 +549,6 @@
             cont.innerHTML = '<p style="color:var(--text-soft); text-align:center; padding:30px 0;">🎉 Nenhum devedor! Tudo em dia.</p>';
             return;
         }
-        // Agrupar por cliente
         const mapa = {};
         quinzenas.forEach(p => {
             const key = p.emailCliente || p.cliente;
@@ -575,7 +556,6 @@
             mapa[key].total += p.total || 0;
             mapa[key].pedidos.push(p);
         });
-        // Buscar WhatsApp dos clientes
         const uSnap = await getDocs(collection(db, "usuarios"));
         uSnap.forEach(d => {
             const u = d.data();
@@ -585,38 +565,50 @@
         cont.innerHTML = lista.map(dev => {
             const pedidosHtml = dev.pedidos.map(p => {
                 const itH = p.itens ? Object.keys(p.itens).map(n => p.itens[n].qtd + 'x ' + n).join(', ') : '...';
-                const statusLabel = p.entregue ? '📦 Entregue' : '⏳ Pendente entrega';
+                const statusLabel = p.entregue ? '📦 Entregue' : '⏳ Aguardando entrega';
                 return '<div style="padding:6px 0; border-bottom:1px solid var(--border); font-size:0.78em;">'
                     + '<span style="font-weight:700;">#' + p.pedidoId + '</span>'
                     + '<span style="color:var(--text-soft); margin-left:6px;">' + new Date(p.data).toLocaleDateString('pt-BR') + '</span>'
                     + '<span style="color:var(--ouro); font-weight:700; margin-left:6px;">' + statusLabel + '</span>'
-                    + '<div style="color:var(--text-soft); margin-top:2px;">' + itH + '</div>'
+                    + '<div style="margin-top:2px; color:var(--text);">' + itH + '</div>'
                     + '<div style="color:var(--vermelho); font-weight:800; margin-top:2px;">R$ ' + (p.total||0).toFixed(2) + '</div>'
                     + '</div>';
             }).join('');
             const numDest = dev.whatsapp ? '55' + dev.whatsapp : WHATSAPP_NUM;
-            const msgTexto = 'Olá ' + dev.nome + '! 🍫\n\nPassando para lembrar que você tem *R$ ' + dev.total.toFixed(2) + '* em aberto com a Rô ♥ Lê.\n\nPode confirmar o pagamento? 😊';
-            const msg = encodeURIComponent(msgTexto);
+            const msgCobrar = encodeURIComponent('Olá ' + dev.nome + '! 🍫\n\nPassando para lembrar que você tem *R$ ' + dev.total.toFixed(2) + '* em aberto com a ' + LOJA + '.\n\nPode confirmar o pagamento? 😊');
             const wpHtml = dev.whatsapp
                 ? '<div style="font-size:0.72em; color:var(--verde); font-weight:700;">📱 ' + dev.whatsapp + '</div>'
                 : '<div style="font-size:0.68em; color:var(--text-soft); font-style:italic;">WhatsApp não cadastrado</div>';
-            return '<div class="devedor-card">'
+            return '<div class="devedor-card" id="dev-' + (dev.email||'').replace(/[^a-z0-9]/gi,'_') + '">'
                 + '<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">'
-                +   '<div>'
-                +     '<div class="devedor-nome">' + dev.nome + '</div>'
-                +     '<div style="font-size:0.72em; color:var(--text-soft);">' + (dev.email||'') + '</div>'
-                +     wpHtml
-                +   '</div>'
-                +   '<button class="ped-btn btn-msg" style="flex:none; padding:8px 14px;" onclick="window.open('https://wa.me/' + numDest + '?text=' + msg + '')">💬 Cobrar</button>'
+                +   '<div><div class="devedor-nome">' + dev.nome + '</div>'
+                +   '<div style="font-size:0.72em; color:var(--text-soft);">' + (dev.email||'') + '</div>'
+                +   wpHtml + '</div>'
+                +   '<button class="ped-btn btn-msg" style="flex:none; min-width:auto; padding:8px 12px;" onclick="window.open(\'https://wa.me/' + numDest + '?text=' + msgCobrar + '\')">💬 Cobrar</button>'
                 + '</div>'
                 + '<div class="devedor-pedidos">' + pedidosHtml + '</div>'
-                + '<div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px; margin-top:6px; border-top:2px solid var(--border);">'
-                +   '<button class="ped-btn btn-pago" style="flex:none; padding:8px 14px;" onclick="marcarDevedorPago('' + dev.email + '')">✅ Marcar Pago</button>'
+                + '<div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px; margin-top:8px; border-top:2px solid var(--border);">'
+                +   '<button class="ped-btn btn-pago" style="flex:none; min-width:auto; padding:8px 14px;" onclick="marcarDevedorPago(\'' + (dev.email||'').replace(/'/g,"\\'") + '\')">✅ Marcar Pago</button>'
                 +   '<div class="devedor-total">R$ ' + dev.total.toFixed(2) + '</div>'
                 + '</div>'
                 + '</div>';
         }).join('');
     }
+
+    window.marcarDevedorPago = async (email) => {
+        confirmar('Marcar tudo como Pago?', 'Todos os pedidos em aberto da quinzena deste cliente serão marcados como Pago.', async () => {
+            const quinzenas = window._todosPedidos.filter(p =>
+                p.emailCliente === email &&
+                (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') &&
+                p.status !== 'Cancelado' && p.status !== 'Pago'
+            );
+            for (const p of quinzenas) {
+                await updateDoc(doc(db, "pedidos", p.id), { status: 'Pago' });
+            }
+            toast('Pagamento registrado! ✓');
+            carregarDevedores();
+        });
+    };
 
     async function carregarClientes() {
         const snap = await getDocs(collection(db, "pedidos"));
@@ -634,27 +626,24 @@
         if (!ranking.length) { cont.innerHTML = '<p style="color:var(--text-soft);">Nenhum cliente ainda.</p>'; return; }
         cont.innerHTML = ranking.map(([email, info], i) => {
             const pedidosHtml = info.pedidos.map(p => {
-                const itH = p.itens ? Object.keys(p.itens).map(n => `${p.itens[n].qtd}x ${n}`).join(', ') : '...';
+                const itH = p.itens ? Object.keys(p.itens).map(n => p.itens[n].qtd + 'x ' + n).join(', ') : '...';
                 const cor = p.entregue ? '#a2d2ff' : (p.status === 'Cancelado' ? '#c0392b' : p.pagamento === 'Quinzena' ? '#e67e22' : '#25d366');
-                return `<div style="font-size:0.75em; margin-top:5px; padding:5px 8px; background:var(--bg); border-radius:8px; border-left:3px solid ${cor};">
-                    <span style="font-weight:700;">#${p.pedidoId}</span> · ${itH} · <strong>R$ ${(p.total||0).toFixed(2)}</strong>
-                    <span style="color:${cor}; font-size:0.85em; font-weight:800; margin-left:4px;">${p.entregue ? 'Entregue' : p.status}</span>
-                </div>`;
+                return '<div style="font-size:0.75em; margin-top:5px; padding:5px 8px; background:var(--bg); border-radius:8px; border-left:3px solid ' + cor + ';">'
+                    + '<span style="font-weight:700;">#' + p.pedidoId + '</span> · ' + itH + ' · <strong>R$ ' + (p.total||0).toFixed(2) + '</strong>'
+                    + '<span style="color:' + cor + '; font-size:0.85em; font-weight:800; margin-left:4px;">' + (p.entregue ? 'Entregue' : p.status) + '</span>'
+                    + '</div>';
             }).join('');
-            return `
-            <div class="prod-card vertical">
-                <div style="display:flex; gap:10px; align-items:center; width:100%;">
-                    <div style="font-size:1.4em; flex-shrink:0;">${['🥇','🥈','🥉'][i] || '👤'}</div>
-                    <div class="prod-info">
-                        <div class="prod-nome">${info.nome}</div>
-                        <div class="prod-det"><span style="font-size:0.85em;">${email}</span></div>
-                        <div style="margin-top:4px; font-size:0.78em; color:var(--ouro); font-weight:700;">
-                            ${info.qtd} pedido${info.qtd>1?'s':''} · R$ ${info.total.toFixed(2)} total
-                        </div>
-                    </div>
-                </div>
-                ${pedidosHtml}
-            </div>`;
+            return '<div class="prod-card vertical">'
+                + '<div style="display:flex; gap:10px; align-items:center; width:100%;">'
+                +   '<div style="font-size:1.4em; flex-shrink:0;">' + (['🥇','🥈','🥉'][i] || '👤') + '</div>'
+                +   '<div class="prod-info">'
+                +     '<div class="prod-nome">' + info.nome + '</div>'
+                +     '<div class="prod-det"><span style="font-size:0.85em;">' + email + '</span></div>'
+                +     '<div style="margin-top:4px; font-size:0.78em; color:var(--ouro); font-weight:700;">' + info.qtd + ' pedido' + (info.qtd>1?'s':'') + ' · R$ ' + info.total.toFixed(2) + ' total</div>'
+                +   '</div>'
+                + '</div>'
+                + pedidosHtml
+                + '</div>';
         }).join('');
     }
 
@@ -672,80 +661,6 @@
         t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 2500);
     }
-
-    async function carregarDevedores() {
-        const todos = window._todosPedidos;
-        const quinzenas = todos.filter(p => (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') && p.status !== 'Cancelado' && p.status !== 'Pago');
-        const cont = document.getElementById('lista-devedores');
-        if (!quinzenas.length) {
-            cont.innerHTML = '<p style="color:var(--text-soft); text-align:center; padding:30px 0;">🎉 Nenhum devedor! Tudo em dia.</p>';
-            return;
-        }
-        // Group by client
-        const mapa = {};
-        quinzenas.forEach(p => {
-            const key = p.emailCliente || p.cliente;
-            if (!mapa[key]) mapa[key] = { nome: p.cliente, email: p.emailCliente, total: 0, pedidos: [], whatsapp: null };
-            mapa[key].total += p.total || 0;
-            mapa[key].pedidos.push(p);
-        });
-        // Fetch WhatsApp from usuarios collection
-        const uids = await getDocs(collection(db, "usuarios"));
-        uids.forEach(d => {
-            const u = d.data();
-            if (u.email && mapa[u.email]) mapa[u.email].whatsapp = u.whatsapp || null;
-        });
-        const lista = Object.values(mapa).sort((a, b) => b.total - a.total);
-        cont.innerHTML = lista.map(dev => {
-            const pedidosHtml = dev.pedidos.map(p => {
-                const itH = p.itens ? Object.keys(p.itens).map(n => `${p.itens[n].qtd}x ${n}`).join(', ') : '...';
-                const statusLabel = p.entregue ? '📦 Entregue' : '⏳ Pendente';
-                return `<div style="padding:5px 0; border-bottom:1px solid var(--border); font-size:0.78em;">
-                    <span style="font-weight:700;">#${p.pedidoId}</span>
-                    <span style="color:var(--text-soft); margin-left:4px;">${new Date(p.data).toLocaleDateString('pt-BR')}</span>
-                    <span style="color:var(--ouro); font-weight:700; margin-left:4px;">${statusLabel}</span>
-                    <div style="color:var(--text-soft); margin-top:2px;">${itH}</div>
-                    <div style="color:var(--vermelho); font-weight:800; margin-top:2px;">R$ ${(p.total||0).toFixed(2)}</div>
-                </div>`;
-            }).join('');
-            const numDest = dev.whatsapp ? `55${dev.whatsapp}` : WHATSAPP_NUM;
-            const msg = encodeURIComponent(`Olá ${dev.nome}! 🍫
-
-Passando para lembrar que você tem *R$ ${dev.total.toFixed(2)}* em aberto com a Rô ♥ Lê.
-
-Pode confirmar o pagamento? 😊`);
-            return `
-            <div class="devedor-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-                    <div>
-                        <div class="devedor-nome">${dev.nome}</div>
-                        <div style="font-size:0.72em; color:var(--text-soft);">${dev.email||''}</div>
-                        ${dev.whatsapp ? `<div style="font-size:0.72em; color:var(--verde); font-weight:700;">📱 ${dev.whatsapp}</div>` : '<div style="font-size:0.68em; color:var(--text-soft); font-style:italic;">WhatsApp não cadastrado</div>'}
-                    </div>
-            </div>
-                <div class="devedor-pedidos" style="margin-bottom:8px;">${pedidosHtml}</div>
-                <div class="devedor-total" style="text-align:right; padding-top:6px; border-top:1px solid var(--border);">
-                    Total em aberto: R$ ${dev.total.toFixed(2)}
-                </div>
-            </div>`;
-        }).join('');
-    }
-
-    window.marcarDevedorPago = async (email) => {
-        confirmar('Marcar tudo como Pago?', 'Todos os pedidos em aberto da quinzena deste cliente serão marcados como Pago.', async () => {
-            const todos = window._todosPedidos;
-            const quinzenas = todos.filter(p =>
-                p.emailCliente === email &&
-                (p.pagamento === 'Quinzena' || p.status === 'Pendente Pagamento (Quinzena)') &&
-                p.status !== 'Cancelado' && p.status !== 'Pago'
-            );
-            for (const p of quinzenas) {
-                await updateDoc(doc(db, "pedidos", p.id), { status: 'Pago' });
-            }
-            toast('Pagamento registrado! ✓');
-            carregarDevedores();
-        });
-    };
 
     window.alternarTema = () => {
         const html = document.documentElement;
