@@ -1,4 +1,4 @@
-const CACHE = 'role-doces-v3';
+const CACHE = 'role-doces-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -10,7 +10,7 @@ const ASSETS = [
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-  self.skipWaiting();
+  // NÃO chama skipWaiting aqui — espera o usuário confirmar
 });
 
 self.addEventListener('activate', e => {
@@ -24,7 +24,6 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  // Firebase e APIs externas: sempre busca na rede
   if (e.request.url.includes('firebaseapp') ||
       e.request.url.includes('googleapis') ||
       e.request.url.includes('gstatic') ||
@@ -34,4 +33,9 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request))
   );
+});
+
+// Recebe mensagem do cliente para ativar nova versão
+self.addEventListener('message', e => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting();
 });

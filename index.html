@@ -563,11 +563,53 @@
 
     /* ── VAZIO ── */
     .vazio { color: #c0a890; font-size: 0.88em; padding: 6px 0; }
+
+    /* ── TOAST ATUALIZAÇÃO ── */
+    #toast-update {
+        display: none;
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--chocolate);
+        color: var(--caramelo-light);
+        border: 1.5px solid var(--caramelo);
+        padding: 13px 20px;
+        border-radius: 18px;
+        font-size: 0.85em;
+        font-weight: 700;
+        z-index: 12000;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        display: none;
+        align-items: center;
+        gap: 12px;
+        width: 88%;
+        max-width: 360px;
+        text-align: left;
+    }
+    #toast-update.show { display: flex; }
+    #toast-update button {
+        background: var(--caramelo);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 7px 14px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        font-size: 0.9em;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
 </style>
 </head>
 <body>
 
     <div id="toast-aviso"></div>
+    <div id="toast-update">
+        🍫 Nova versão disponível!
+        <button onclick="ativarAtualizacao()">Atualizar</button>
+    </div>
     <div id="toast-central">
         <h2>🍫 Oba!</h2>
         <p>Pedido enviado com sucesso!</p>
@@ -979,6 +1021,29 @@
             window._msgZapTemp = null;
         }
         if (window.resetar) window.resetar();
+    };
+    window._swReg = null;
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+            window._swReg = reg;
+            reg.addEventListener('updatefound', () => {
+                const novo = reg.installing;
+                novo.addEventListener('statechange', () => {
+                    if (novo.state === 'installed' && navigator.serviceWorker.controller) {
+                        document.getElementById('toast-update').classList.add('show');
+                    }
+                });
+            });
+        });
+        // Após o SW assumir controle, recarrega automaticamente
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.location.reload();
+        });
+    }
+    window.ativarAtualizacao = () => {
+        if (window._swReg && window._swReg.waiting) {
+            window._swReg.waiting.postMessage('SKIP_WAITING');
+        }
     };
 </script>
 </body>

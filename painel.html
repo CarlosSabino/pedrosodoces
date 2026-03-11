@@ -129,7 +129,41 @@
     #painel-toast { display:none; position:fixed; top:18px; left:50%; transform:translateX(-50%); background:var(--choc); color:var(--ouro-light); border:1px solid var(--ouro); padding:11px 24px; border-radius:50px; font-size:0.88em; font-weight:700; z-index:9999; box-shadow:0 6px 24px rgba(0,0,0,0.4); white-space:nowrap; animation:slideInT 0.3s ease; }
     @keyframes slideInT { from{top:-50px;opacity:0} to{top:18px;opacity:1} }
 
-    .devedor-card { background:var(--surface); border-radius:16px; padding:14px; margin-bottom:11px; box-shadow:0 3px 12px var(--sombra); border:1px solid var(--border); border-left:5px solid var(--laranja); }
+    /* TOAST ATUALIZAÇÃO */
+    #toast-update {
+        display: none;
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--choc);
+        color: var(--ouro-light);
+        border: 1.5px solid var(--ouro);
+        padding: 13px 20px;
+        border-radius: 18px;
+        font-size: 0.85em;
+        font-weight: 700;
+        z-index: 12000;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        align-items: center;
+        gap: 12px;
+        width: 88%;
+        max-width: 360px;
+    }
+    #toast-update.show { display: flex; }
+    #toast-update button {
+        background: var(--ouro);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 7px 14px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        font-size: 0.9em;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+    } border-radius:16px; padding:14px; margin-bottom:11px; box-shadow:0 3px 12px var(--sombra); border:1px solid var(--border); border-left:5px solid var(--laranja); }
     .devedor-nome { font-weight:800; font-size:0.95em; }
     .devedor-total { font-size:1.1em; font-weight:800; color:var(--vermelho); }
     .devedor-pedidos { font-size:0.78em; color:var(--text-soft); margin-top:6px; line-height:1.6; }
@@ -139,6 +173,10 @@
 <body>
 
 <div id="painel-toast"></div>
+<div id="toast-update">
+    🍫 Nova versão disponível!
+    <button onclick="ativarAtualizacao()">Atualizar</button>
+</div>
 
 <div id="tela-painel" style="display:none;">
     <div class="header">
@@ -670,6 +708,30 @@
     window.alternarTema = () => {
         const html = document.documentElement;
         html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    };
+</script>
+<script>
+    window._swReg = null;
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+            window._swReg = reg;
+            reg.addEventListener('updatefound', () => {
+                const novo = reg.installing;
+                novo.addEventListener('statechange', () => {
+                    if (novo.state === 'installed' && navigator.serviceWorker.controller) {
+                        document.getElementById('toast-update').classList.add('show');
+                    }
+                });
+            });
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.location.reload();
+        });
+    }
+    window.ativarAtualizacao = () => {
+        if (window._swReg && window._swReg.waiting) {
+            window._swReg.waiting.postMessage('SKIP_WAITING');
+        }
     };
 </script>
 </body>
