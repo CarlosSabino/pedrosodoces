@@ -631,7 +631,6 @@
                 <option value="" disabled selected>Forma de pagamento?</option>
                 <option value="Pix">Pix ⚡</option>
                 <option value="Dinheiro">Dinheiro 💵</option>
-                <option value="Cartão">Cartão 💳</option>
                 <option value="Quinzena">Na Quinzena 🗓️</option>
             </select>
             <button class="btn btn-whatsapp" onclick="enviarPedido()">Finalizar Pedido no WhatsApp 🚀</button>
@@ -771,7 +770,7 @@
                     <div class="pedido-mini-card" style="border-left: 5px solid ${cor};">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; gap:6px;">
                             <strong style="font-size:0.82em;">#${ped.pedidoId}</strong>
-                            <span style="color:${cor}; font-size:0.62em; font-weight:800; text-transform:uppercase; background:rgba(59,31,10,0.06); padding:3px 8px; border-radius:8px; white-space:nowrap;">${ped.entregue ? 'Entregue' : ped.status}</span>
+                            <span style="color:${cor}; font-size:0.62em; font-weight:800; text-transform:uppercase; background:rgba(59,31,10,0.06); padding:3px 8px; border-radius:8px; white-space:nowrap;">${ped.entregue ? 'Entregue' : ped.status === 'Pendente Pagamento (Quinzena)' ? '💸 Quinzena' : ped.status}</span>
                         </div>
                         ${quinzenaPendente ? `<div style="font-size:0.68em; background:rgba(230,126,34,0.12); color:#e67e22; padding:3px 9px; border-radius:8px; font-weight:800; display:inline-block; margin-bottom:6px;">💸 PAGAMENTO PENDENTE (QUINZENA)</div>` : ''}
                         <div class="itens-ped">${itH}</div>
