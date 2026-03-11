@@ -945,7 +945,6 @@
         if (window._carrinho[chave]) window._carrinho[chave].qtd++;
         else window._carrinho[chave] = { preco, qtd: 1, idFirebase: id };
         window._carrinhoTotal = (window._carrinhoTotal || 0) + preco;
-        const chave = categoria ? `[${categoria}] ${nome}` : nome;
         renderizarCarrinho();
         mostrarAviso(`${window._carrinho[chave].qtd}x ${nome} adicionado! 🍫`);
     };
