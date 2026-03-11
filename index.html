@@ -260,15 +260,13 @@
 
     /* ── CATEGORIAS ── */
     .categorias-scroll {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 8px;
-        flex-wrap: wrap;
-        padding-bottom: 6px;
         margin-bottom: 14px;
     }
     .cat-btn {
-        flex-shrink: 0;
-        padding: 6px 14px;
+        padding: 8px 14px;
         border-radius: 20px;
         border: 1.5px solid var(--creme-dark);
         background: white;
@@ -279,12 +277,39 @@
         cursor: pointer;
         transition: all 0.2s;
         letter-spacing: 0.3px;
+        text-align: center;
     }
     .cat-btn.ativa, .cat-btn:active {
         background: var(--chocolate);
         color: var(--caramelo-light);
         border-color: var(--chocolate);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /* ── GRID DE PRODUTOS ── */
     #lista-produtos {
