@@ -11,8 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Pedroso Doces">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" type="image/png" href="logo.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -607,7 +607,7 @@
     <!-- TELA DE LOGIN -->
     <div id="sessao-auth" class="main-card">
         <div class="logo-area">
-            <img src="logo.png" style="width:200px; object-fit:contain; margin-bottom:8px;">
+            <img src="logo.jpg" style="width:200px; object-fit:contain; margin-bottom:8px;">
         </div>
 
         <div class="tabs">
@@ -634,7 +634,7 @@
     <!-- CARDÁPIO -->
     <div id="sessao-cardapio" class="main-card" style="display:none;">
         <div class="logo-area" style="margin-bottom:0;">
-            <img src="logo.png" style="width:160px; object-fit:contain;">
+            <img src="logo.jpg" style="width:160px; object-fit:contain;">
         </div>
 
         <p id="boas-vindas" style="margin-top:16px;"></p>
@@ -694,14 +694,15 @@
     import { getFirestore, collection, getDocs, query, where, doc, onSnapshot, runTransaction, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // ⚠️ CONFIGURE AQUI ⚠️
-    const WHATSAPP_NUM = "5511999999999"; // Substitua pelo número do WhatsApp
+    const WHATSAPP_NUM = "5511973019207"; // Substitua pelo número do WhatsApp
     const firebaseConfig = {
-        apiKey: "COLE_AQUI",
-        authDomain: "COLE_AQUI.firebaseapp.com",
-        projectId: "COLE_AQUI",
-        storageBucket: "COLE_AQUI.firebasestorage.app",
-        messagingSenderId: "COLE_AQUI",
-        appId: "COLE_AQUI"
+            apiKey: "AIzaSyAZtYo4CuXLzTOGsg2jRtDvbuK_t8ie33c",
+            authDomain: "pedrosodoces.firebaseapp.com",
+            databaseURL: "https://pedrosodoces-default-rtdb.firebaseio.com",
+            projectId: "pedrosodoces",
+            storageBucket: "pedrosodoces.firebasestorage.app",
+            messagingSenderId: "763771198237",
+            appId: "1:763771198237:web:cb3d0ec5931432fba49ff4"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -994,7 +995,7 @@
         document.getElementById('modal-pix').style.display = 'none';
         celebrarPedido();
         if (window._msgZapTemp) {
-            const num = "5511999999999"; // mesmo WHATSAPP_NUM
+            const num = "5511973019207"; // mesmo WHATSAPP_NUM
             window.location.href = `https://wa.me/${num}?text=${encodeURIComponent(window._msgZapTemp)}`;
             window._msgZapTemp = null;
         }
