@@ -376,7 +376,8 @@
             const itH = ped.itens ? Object.keys(ped.itens).map(n => ped.itens[n].qtd + 'x ' + n).join(', ') : '...';
             const isQuinzenaPendente = (ped.pagamento === 'Quinzena' || ped.status === 'Pendente Pagamento (Quinzena)') && ped.status !== 'Pago' && ped.status !== 'Cancelado';
             const btnPago = ped.status !== 'Pago' && ped.status !== 'Cancelado'
-                ? '<button class="ped-btn btn-pago" data-id="' + ped.id + '" data-acao="pago">✅ Pago</button>' : '';
+                ? '<button class="ped-btn btn-pago" data-id="' + ped.id + '" data-acao="pago">✅ Pago</button>'
+                : '';
             const btnEntregue = !ped.entregue && ped.status !== 'Cancelado'
                 ? '<button class="ped-btn btn-entregue" data-id="' + ped.id + '" data-acao="entregue">📦 Entregue</button>' : '';
             const btnCancelar = ped.status !== 'Cancelado'
@@ -422,7 +423,7 @@
         confirmar(msgs[tipo] || 'Confirmar?', '', () => {
             const ref = doc(db, "pedidos", id);
             if (tipo === 'pago') updateDoc(ref, { status: 'Pago' });
-            else if (tipo === 'entregue') updateDoc(ref, { entregue: true, status: 'Entregue' });
+            else if (tipo === 'entregue') updateDoc(ref, { entregue: true });
             else if (tipo === 'cancelar') updateDoc(ref, { status: 'Cancelado' });
             toast('Atualizado! ✓');
         });
