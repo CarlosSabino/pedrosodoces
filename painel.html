@@ -392,7 +392,7 @@
                 +     '<div class="ped-cliente">' + (ped.cliente||'?') + tagQ + '</div>'
                 +     '<div style="font-size:0.7em; color:var(--text-soft);">#' + ped.pedidoId + ' · ' + new Date(ped.data).toLocaleDateString('pt-BR') + '</div>'
                 +   '</div>'
-                +   '<span class="ped-status" style="background:' + cor + ';">' + (ped.entregue ? 'Entregue' : ped.status) + '</span>'
+                +   '<span class="ped-status" style="background:' + cor + ';">' + (ped.entregue ? 'Entregue' : ped.status === 'Pendente Pagamento (Quinzena)' ? '💸 Quinzena' : ped.status) + '</span>'
                 + '</div>'
                 + '<div class="ped-body"><div style="margin-bottom:5px;">' + itH + '</div><strong>R$ ' + (ped.total||0).toFixed(2) + '</strong> · ' + (ped.pagamento||'') + '</div>'
                 + '<div class="ped-footer">' + btnPago + btnEntregue + btnMsg + btnCancelar + '</div>'
