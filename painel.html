@@ -9,6 +9,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Painel Pedroso">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -37,7 +39,6 @@
     .header { background:var(--header-bg); padding:13px 16px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 4px 20px rgba(0,0,0,0.35); }
     .header-left { display:flex; align-items:center; gap:10px; }
     .header-brand { margin:0; font-family:'Playfair Display',serif; font-size:1em; color:var(--ouro-light); font-weight:700; }
-    .header-sub { font-size:0.68em; color:rgba(255,255,255,0.6); margin-top:1px; letter-spacing:1px; }
     .header-right { display:flex; gap:7px; }
     .icon-btn { background:rgba(255,255,255,0.12); border:none; border-radius:50%; width:36px; height:36px; color:white; font-size:1em; cursor:pointer; display:flex; align-items:center; justify-content:center; }
     .icon-btn:active { background:rgba(255,255,255,0.3); }
@@ -133,7 +134,7 @@
     /* LOGIN */
     .login-wrap { display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; }
     .login-card { background:var(--surface); border-radius:28px; padding:32px 26px; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(0,0,0,0.25); border:1px solid var(--border); text-align:center; }
-    .login-card h2 { font-family:'Playfair Display',serif; color:var(--ouro); margin:0 0 6px; }
+    .login-card img { width:120px; margin-bottom:12px; }
     .login-card p { color:var(--text-soft); font-size:0.85em; margin-bottom:20px; }
     .login-input { width:100%; padding:12px 14px; border-radius:11px; border:1.5px solid var(--border); background:var(--bg); font-family:'Lato',sans-serif; font-size:0.92em; color:var(--text); outline:none; margin-bottom:10px; box-sizing:border-box; }
     .login-input:focus { border-color:var(--ouro); }
@@ -151,7 +152,7 @@
 <!-- LOGIN ADMIN -->
 <div id="tela-login" class="login-wrap">
     <div class="login-card">
-        <h2>Pedroso Doces</h2>
+        <img src="logo.jpg" alt="Pedroso Doces">
         <p>Painel de Gestão</p>
         <input class="login-input" type="email" id="adminEmail" placeholder="E-mail admin">
         <input class="login-input" type="password" id="adminSenha" placeholder="Senha">
@@ -163,10 +164,8 @@
 <div id="tela-painel" style="display:none;">
     <div class="header">
         <div class="header-left">
-            <div>
-                <p class="header-brand">Pedroso Doces</p>
-                <p class="header-sub">GESTÃO</p>
-            </div>
+            <img src="logo.jpg" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid rgba(196,131,42,0.5); flex-shrink:0;">
+            <p class="header-brand">Painel de Gestão</p>
         </div>
         <div class="header-right">
             <button class="icon-btn" onclick="alternarTema()" title="Tema">🌙</button>
@@ -308,16 +307,15 @@
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, where, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // ⚠️ CONFIGURE AQUI ⚠️
-    const WHATSAPP_NUM = "5511973019207"; // Substitua pelo número do WhatsApp
+    const WHATSAPP_NUM = "5511973019207";
     const firebaseConfig = {
-            apiKey: "AIzaSyAZtYo4CuXLzTOGsg2jRtDvbuK_t8ie33c",
-            authDomain: "pedrosodoces.firebaseapp.com",
-            databaseURL: "https://pedrosodoces-default-rtdb.firebaseio.com",
-            projectId: "pedrosodoces",
-            storageBucket: "pedrosodoces.firebasestorage.app",
-            messagingSenderId: "763771198237",
-            appId: "1:763771198237:web:cb3d0ec5931432fba49ff4"
+        apiKey: "AIzaSyAZtYo4CuXLzTOGsg2jRtDvbuK_t8ie33c",
+        authDomain: "pedrosodoces.firebaseapp.com",
+        databaseURL: "https://pedrosodoces-default-rtdb.firebaseio.com",
+        projectId: "pedrosodoces",
+        storageBucket: "pedrosodoces.firebasestorage.app",
+        messagingSenderId: "763771198237",
+        appId: "1:763771198237:web:cb3d0ec5931432fba49ff4"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -327,7 +325,6 @@
     window._todosPedidos = [];
     window._filtroAtual = 'todos';
 
-    // Auth
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             try {
@@ -358,7 +355,6 @@
         carregarProdutosAdmin();
     }
 
-    // PEDIDOS
     function ouvirPedidos() {
         onSnapshot(query(collection(db, "pedidos"), orderBy("data", "desc")), (snap) => {
             window._todosPedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -399,7 +395,7 @@
             const btnEntregue = !ped.entregue && ped.status !== 'Cancelado' ? `<button class="ped-btn btn-entregue" onclick="acao('${ped.id}','entregue')">📦 Entregue</button>` : '';
             const btnCancelar = ped.status !== 'Cancelado' ? `<button class="ped-btn btn-cancelar" onclick="acao('${ped.id}','cancelar')">❌</button>` : '';
             const msg = encodeURIComponent(`Olá ${ped.cliente}! 🍫 Seu pedido *#${ped.pedidoId}* da Pedroso Doces está pronto!`);
-            const btnMsg = `<button class="ped-btn btn-msg" onclick="window.open('https://wa.me/${WHATSAPP_NUM.replace(ped.emailCliente||'','').trim()}?text=${msg}')">💬</button>`;
+            const btnMsg = `<button class="ped-btn btn-msg" onclick="window.open('https://wa.me/${WHATSAPP_NUM}?text=${msg}')">💬</button>`;
             return `
             <div class="pedido-card" style="border-left:5px solid ${cor};">
                 <div class="ped-header">
@@ -436,7 +432,6 @@
         });
     };
 
-    // PRODUTOS
     window._produtosLista = [];
     async function carregarProdutosAdmin() {
         onSnapshot(collection(db, "produtos"), (snap) => {
@@ -525,7 +520,6 @@
         document.getElementById('prod-categoria').value = '';
     }
 
-    // CLIENTES
     window.irPara = (sec) => {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -560,7 +554,6 @@
             </div>`).join('');
     }
 
-    // UTILS
     function confirmar(titulo, msg, cb) {
         document.getElementById('modal-titulo').textContent = titulo;
         document.getElementById('modal-msg').textContent = msg;
