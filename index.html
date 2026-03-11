@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Pedroso Doces">
     <link rel="apple-touch-icon" href="logo.jpg">
-    <link rel="icon" type="image/png" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,7 +150,7 @@
         box-shadow: 0 20px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(196,131,42,0.2);
     }
 
-    /* ── LOGO / HEADER ── */
+    /* ── LOGO ── */
     .logo-area {
         text-align: center;
         margin-bottom: 28px;
@@ -158,42 +158,11 @@
     .logo-area img {
         display: block;
         margin: 0 auto 8px;
-        width: 160px;
-        height: 160px;
+        width: 180px;
+        height: 180px;
         border-radius: 50%;
         object-fit: cover;
         object-position: center;
-    }
-    .logo-svg-wrap {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: linear-gradient(145deg, var(--chocolate) 0%, var(--chocolate-mid) 100%);
-        border: 3px solid var(--caramelo);
-        box-shadow: 0 8px 30px rgba(59,31,10,0.5), inset 0 1px 0 rgba(196,131,42,0.3);
-        margin-bottom: 14px;
-    }
-    .logo-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.65em;
-        font-weight: 700;
-        color: var(--chocolate);
-        margin: 0;
-        line-height: 1.1;
-    }
-    .logo-title span {
-        color: var(--caramelo);
-    }
-    .logo-subtitle {
-        font-size: 0.72em;
-        color: var(--texto-soft);
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        margin-top: 4px;
-        font-weight: 400;
     }
 
     /* ── ABAS ── */
@@ -273,14 +242,6 @@
         font-size: 1em;
         margin-top: 18px;
         box-shadow: 0 4px 14px rgba(37,211,102,0.3);
-    }
-    .btn-link {
-        background: none;
-        color: var(--texto-soft);
-        font-size: 0.82em;
-        text-decoration: underline;
-        box-shadow: none;
-        margin-top: 6px;
     }
 
     /* ── SAUDAÇÃO ── */
@@ -614,7 +575,7 @@
     <!-- TELA DE LOGIN -->
     <div id="sessao-auth" class="main-card">
         <div class="logo-area">
-            <img src="logo.jpg" style="width:200px; object-fit:contain; margin-bottom:8px;">
+            <img src="logo.jpg" alt="Pedroso Doces">
         </div>
 
         <div class="tabs">
@@ -641,7 +602,7 @@
     <!-- CARDÁPIO -->
     <div id="sessao-cardapio" class="main-card" style="display:none;">
         <div class="logo-area" style="margin-bottom:0;">
-            <img src="logo.jpg" style="width:160px; object-fit:contain;">
+            <img src="logo.jpg" alt="Pedroso Doces">
         </div>
 
         <p id="boas-vindas" style="margin-top:16px;"></p>
@@ -700,22 +661,21 @@
     import { getAuth, setPersistence, browserSessionPersistence, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, query, where, doc, onSnapshot, runTransaction, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // ⚠️ CONFIGURE AQUI ⚠️
-    const WHATSAPP_NUM = "5511999999999"; // Substitua pelo número do WhatsApp
+    const WHATSAPP_NUM = "5511973019207";
     const firebaseConfig = {
-        apiKey: "COLE_AQUI",
-        authDomain: "COLE_AQUI.firebaseapp.com",
-        projectId: "COLE_AQUI",
-        storageBucket: "COLE_AQUI.firebasestorage.app",
-        messagingSenderId: "COLE_AQUI",
-        appId: "COLE_AQUI"
+        apiKey: "AIzaSyAZtYo4CuXLzTOGsg2jRtDvbuK_t8ie33c",
+        authDomain: "pedrosodoces.firebaseapp.com",
+        databaseURL: "https://pedrosodoces-default-rtdb.firebaseio.com",
+        projectId: "pedrosodoces",
+        storageBucket: "pedrosodoces.firebasestorage.app",
+        messagingSenderId: "763771198237",
+        appId: "1:763771198237:web:cb3d0ec5931432fba49ff4"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Guarda todos os produtos para filtro local
     window._todosProdutos = [];
 
     async function iniciarAuth() {
@@ -1001,7 +961,7 @@
         document.getElementById('modal-pix').style.display = 'none';
         celebrarPedido();
         if (window._msgZapTemp) {
-            const num = "5511999999999"; // mesmo WHATSAPP_NUM
+            const num = "5511973019207";
             window.location.href = `https://wa.me/${num}?text=${encodeURIComponent(window._msgZapTemp)}`;
             window._msgZapTemp = null;
         }
