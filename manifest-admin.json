@@ -1,14 +1,15 @@
 {
-  "name": "Pedroso Doces — Painel",
-  "short_name": "Painel Pedroso",
-  "description": "Painel de Gestão — Pedroso Doces",
+  "name": "Rô ♥ Lê | Doces — Painel",
+  "short_name": "Painel Rô Lê",
+  "description": "Painel de Gestão — Rô ♥ Lê | Doces",
   "start_url": "./painel.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#3b1f0a",
   "theme_color": "#3b1f0a",
   "orientation": "portrait",
   "icons": [
-    { "src": "logo.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "logo.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
