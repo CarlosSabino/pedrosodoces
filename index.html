@@ -126,15 +126,14 @@
     }
     .doce-animado {
         position: fixed;
-        top: -100px;
+        top: -120px;
         z-index: 10005;
         pointer-events: none;
-        font-size: 2em;
-        animation: quedaDoce 4s linear;
+        animation: quedaDoce linear forwards;
     }
     @keyframes quedaDoce {
-        0%   { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-        100% { transform: translateY(110vh) rotate(720deg); opacity: 0.5; }
+        0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(115vh) rotate(720deg); opacity: 0.6; }
     }
 
     /* ── CARD PRINCIPAL ── */
@@ -283,32 +282,6 @@
         color: var(--caramelo-light);
         border-color: var(--chocolate);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /* ── GRID DE PRODUTOS ── */
     #lista-produtos {
@@ -917,23 +890,25 @@
     }
     window.mostrarAviso = mostrarAviso;
 
-    const EMOJIS_CHUVA = ['🍫','🍬','🧁','🍯','🍮','⭐','💫','✨','🎉','🎊','🍰','🧊'];
+    const DOCES_CHUVA = [
+        'gelinho1.png','gelinho2.png','gelinho3.png','gelinho4.png','gelinho5.png',
+        'trufa1.png','trufa2.png','trufa3.png'
+    ];
     function celebrarPedido() {
         document.getElementById('overlay-chuva').style.display = 'block';
         document.getElementById('toast-central').style.display = 'block';
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 55; i++) {
             setTimeout(() => {
                 if (document.getElementById('overlay-chuva').style.display === 'none') return;
-                const d = document.createElement('span');
-                d.textContent = EMOJIS_CHUVA[Math.floor(Math.random() * EMOJIS_CHUVA.length)];
+                const d = document.createElement('img');
+                d.src = DOCES_CHUVA[Math.floor(Math.random() * DOCES_CHUVA.length)];
                 d.className = 'doce-animado';
-                d.style.left = Math.random() * 100 + "vw";
-                d.style.fontSize = (Math.random() * 18 + 18) + "px";
-                d.style.animationDuration = (Math.random() * 2 + 2.5) + "s";
-                d.style.animationDelay = (Math.random() * 0.8) + "s";
+                d.style.left = Math.random() * 100 + 'vw';
+                d.style.width = (Math.random() * 35 + 45) + 'px';
+                d.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                d.style.animationDelay = (Math.random() * 1) + 's';
                 document.body.appendChild(d);
-                setTimeout(() => d.remove(), 5000);
-            }, i * 90);
+            }, i * 110);
         }
     }
     window.celebrarPedido = celebrarPedido;
