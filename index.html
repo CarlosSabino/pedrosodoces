@@ -897,19 +897,20 @@
     function celebrarPedido() {
         document.getElementById('overlay-chuva').style.display = 'block';
         document.getElementById('toast-central').style.display = 'block';
-        for (let i = 0; i < 55; i++) {
-            setTimeout(() => {
-                if (document.getElementById('overlay-chuva').style.display === 'none') return;
-                const d = document.createElement('img');
-                d.src = DOCES_CHUVA[Math.floor(Math.random() * DOCES_CHUVA.length)];
-                d.className = 'doce-animado';
-                d.style.left = Math.random() * 100 + 'vw';
-                d.style.width = (Math.random() * 35 + 45) + 'px';
-                d.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                d.style.animationDelay = (Math.random() * 1) + 's';
-                document.body.appendChild(d);
-            }, i * 110);
+        function lancarDoce() {
+            if (document.getElementById('overlay-chuva').style.display === 'none') return;
+            const d = document.createElement('img');
+            const dur = Math.random() * 2 + 3;
+            d.src = DOCES_CHUVA[Math.floor(Math.random() * DOCES_CHUVA.length)];
+            d.className = 'doce-animado';
+            d.style.left = Math.random() * 100 + 'vw';
+            d.style.width = (Math.random() * 35 + 45) + 'px';
+            d.style.animationDuration = dur + 's';
+            document.body.appendChild(d);
+            setTimeout(() => d.remove(), dur * 1000);
+            setTimeout(lancarDoce, 110);
         }
+        lancarDoce();
     }
     window.celebrarPedido = celebrarPedido;
 
