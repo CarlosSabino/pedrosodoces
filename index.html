@@ -355,7 +355,7 @@
     }
     .btn-add {
         position: absolute;
-        top: 8px; right: 8px;
+        top: auto; bottom: 52px; right: 8px;
         background: var(--caramelo);
         color: white;
         border: none;
@@ -780,6 +780,7 @@
             const cores = {
                 "Cancelado": "#c0392b",
                 "Pago": "#25d366",
+                "Entregue": "#a2d2ff",
                 "Pendente Pagamento (Quinzena)": "#e67e22",
                 "default": "#c4832a"
             };
@@ -791,6 +792,7 @@
                     <div class="pedido-mini-card" style="border-left: 5px solid ${cor};">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                             <strong>#${ped.pedidoId}</strong>
+                            ${ped.pagamento === 'Quinzena' && !ped.entregue ? '<span style=\'font-size:0.65em; background:rgba(230,126,34,0.15); color:#e67e22; padding:2px 7px; border-radius:8px; font-weight:800; margin-left:5px;\'>💸 PAGTO PENDENTE</span>' : ''}
                             <span style="color:${cor}; font-size:0.65em; font-weight:800; text-transform:uppercase; background:rgba(59,31,10,0.06); padding:3px 8px; border-radius:8px;">${ped.status}</span>
                         </div>
                         <div class="itens-ped">${itH}</div>
@@ -963,7 +965,7 @@
         c.innerHTML = k.length === 0
             ? '<span class="vazio">Vazio.</span>'
             : k.map(n => `<div class="item-carrinho"><span>${carrinho[n].qtd}x ${n}</span><button onclick="remover('${n}')">✖</button></div>`).join('');
-        document.getElementById('total-valor').innerText = total.toFixed(2);
+        document.getElementById('total-valor').innerText = total.toFixed(2).replace('.', ',');
         const totalItens = k.reduce((acc, n) => acc + carrinho[n].qtd, 0);
         const badge = document.getElementById('badge-carrinho');
         const btnF = document.getElementById('btn-carrinho-flutuante');
