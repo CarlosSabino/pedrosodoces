@@ -1,4 +1,4 @@
-const CACHE = 'role-doces-v2';
+const CACHE = 'role-doces-v6';
 const ASSETS = [
   './',
   './index.html',
