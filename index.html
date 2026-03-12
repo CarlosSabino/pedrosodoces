@@ -51,22 +51,26 @@
         overflow-x: hidden;
     }
 
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url('background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: blur(3px) brightness(0.45);
+        z-index: 0;
+        transform: scale(1.05); /* evita bordas brancas do blur */
+    }
+
     body::before {
         content: '';
         position: fixed;
         inset: 0;
-        background:
-            radial-gradient(ellipse at 20% 20%, rgba(196, 131, 42, 0.12) 0%, transparent 55%),
-            radial-gradient(ellipse at 80% 80%, rgba(212, 165, 32, 0.08) 0%, transparent 55%),
-            repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 20px,
-                rgba(255,255,255,0.012) 20px,
-                rgba(255,255,255,0.012) 21px
-            );
-        pointer-events: none;
+        background: rgba(30, 10, 0, 0.35);
         z-index: 0;
+        pointer-events: none;
     }
 
     /* ── TOAST ── */
@@ -1026,23 +1030,41 @@
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js').then(reg => {
             window._swReg = reg;
+
+            // Verifica atualização na hora
+            reg.update();
+
+            const mostrarToast = () => {
+                document.getElementById('toast-update').classList.add('show');
+            };
+
+            // SW já estava esperando antes da página carregar
+            if (reg.waiting) {
+                mostrarToast();
+            }
+
+            // SW encontrou atualização durante a sessão
             reg.addEventListener('updatefound', () => {
                 const novo = reg.installing;
                 novo.addEventListener('statechange', () => {
                     if (novo.state === 'installed' && navigator.serviceWorker.controller) {
-                        document.getElementById('toast-update').classList.add('show');
+                        mostrarToast();
                     }
                 });
             });
+
+            // Verifica a cada 60 segundos em background
+            setInterval(() => reg.update(), 60000);
         });
-        // Após o SW assumir controle, recarrega automaticamente
+
         navigator.serviceWorker.addEventListener('controllerchange', () => {
             window.location.reload();
         });
     }
     window.ativarAtualizacao = () => {
-        if (window._swReg && window._swReg.waiting) {
-            window._swReg.waiting.postMessage('SKIP_WAITING');
+        const reg = window._swReg;
+        if (reg && reg.waiting) {
+            reg.waiting.postMessage('SKIP_WAITING');
         }
     };
 </script>
